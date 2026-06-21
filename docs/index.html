@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RankedSMPX Docs</title>
+  <meta name="description" content="Official documentation for RankedSMPX - A competitive ranked SMP plugin with rank-based perks">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔</text></svg>">
+  
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js" data-manual></script>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a class="brand" href="#">
+        <span>RankedSMPX</span>
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main" id="content">
+    <div class="top-mobile">
+      <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+      <strong style="font-size:15px">RankedSMPX</strong>
+      <button class="theme-toggle" id="themeToggleMobile" aria-label="Toggle theme" style="margin-left:auto">🌙</button>
+    </div>
+    
+    <div id="pageContent">
+      <div class="loading">Loading...</div>
+    </div>
+  </div>
+
+  <aside class="toc-sidebar" id="tocSidebar">
+    <div class="toc-header">On This Page</div>
+    <nav class="toc-nav" id="tocNav">
+      <div class="toc-empty">No headings found</div>
+    </nav>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>

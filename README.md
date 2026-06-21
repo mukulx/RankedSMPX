@@ -9,6 +9,12 @@ Official issue tracker for [RankedSMPX](https://modrinth.com/plugin/rankedsmpx) 
 
 Get the latest version on [Modrinth](https://modrinth.com/plugin/rankedsmpx)
 
+## Documentation
+
+📖 **Full Documentation:** [rankedsmpx.github.io](https://mukulx.github.io/RankedSMPX/)
+
+Learn about installation, commands, configuration, and all features.
+
 ## Report an Issue
 
 - **Bug Report:** [Create a bug report](https://github.com/mukulx/RankedSMPX/issues/new?template=bug_report.yml)
@@ -22,6 +28,7 @@ Get the latest version on [Modrinth](https://modrinth.com/plugin/rankedsmpx)
 
 ## Support
 
+- **Documentation:** [rankedsmpx.github.io](https://mukulx.github.io/RankedSMPX/)
 - **Plugin Page:** [Modrinth](https://modrinth.com/plugin/rankedsmpx)
 - **Issues:** [GitHub Issues](https://github.com/mukulx/RankedSMPX/issues)
 - **Discord:** [Join our server](https://discord.gg/QGsJYht2vy)

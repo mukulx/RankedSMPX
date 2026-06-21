@@ -1,0 +1,125 @@
+name: Bug Report
+description: Report a bug or issue with RankedSMPX
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the form below with as much detail as possible.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-Submission Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I am using the latest version of RankedSMPX
+          required: true
+        - label: I have checked existing issues and this is not a duplicate
+          required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin Version
+      description: What version of RankedSMPX are you using?
+      placeholder: "e.g., 2.1.6"
+    validations:
+      required: true
+
+  - type: input
+    id: server-version
+    attributes:
+      label: Server Software & Version
+      description: What server software and Minecraft version are you running?
+      placeholder: "e.g., Paper 1.21.1, Purpur 1.21.1, or Spigot 1.21.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear description of what the bug is
+      placeholder: "Describe the bug in detail..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Run command `/rsmp start`
+        2. Player joins the server
+        3. Bug occurs
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: "Describe what should have happened..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: "Describe what actually happened..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs / Stack Traces
+      description: Please paste any relevant error logs or stack traces
+      placeholder: "Paste console errors here..."
+      render: shell
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Paste relevant parts of your config.yml (if applicable)
+      placeholder: "Paste config here..."
+      render: yaml
+
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Which integrations are you using?
+      description: Select all that apply
+      multiple: true
+      options:
+        - Discord Bot
+        - PlaceholderAPI
+        - TAB Plugin
+        - None
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that might be helpful
+      placeholder: "Screenshots, videos, or additional details..."
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Bug Severity
+      description: How severe is this bug?
+      options:
+        - Critical (Server crash, data loss)
+        - High (Major feature broken)
+        - Medium (Feature partially broken)
+        - Low (Minor issue, cosmetic)
+    validations:
+      required: true

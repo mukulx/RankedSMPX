@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discord Support
+    url: https://discord.com/invite/QGsJYht2vy
+    about: Join our Discord server for quick help and support
+  - name: Documentation
+    url: https://mukulx.github.io/RankedSMPX/
+    about: Check the full documentation for guides and help
+  - name: Download Plugin
+    url: https://modrinth.com/plugin/rankedsmpx
+    about: Download the latest version from Modrinth
