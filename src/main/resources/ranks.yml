@@ -1,0 +1,58 @@
+# ============================================================================
+#  RankedSMPX - ranks.yml
+#  One line per rank. After editing, run /rsmp reload.
+# ============================================================================
+#
+#  ROWS
+#    -1   blacklisted players (only prefix and suffix are used)
+#     0   unranked players
+#    1+   ranked players, 1 is the top rank
+#
+#  COLUMNS
+#    hearts  max health in hearts (1 heart = 2 HP)
+#    xp      XP multiplier
+#    potion  potion duration multiplier
+#    slots   extra /inv slots, 0 = none, max 54
+#    prefix  tab list / chat prefix (&-codes or MiniMessage)
+#    suffix  tab list suffix
+#
+#  ADD A RANK
+#    Add one more line with the next number. That is all.
+#    Everything you leave out is filled in for you:
+#      hearts, xp, potion, slots, suffix  copied from the rank above
+#      prefix                             "&e[#<number>] &r"
+#    So the shortest possible new rank is:   21: {}
+#    or with your own values:                21: { hearts: 10.0, xp: 1.0 }
+#
+#  The number of ranks is the highest row. Use 1, 2, 3... with no gaps.
+#  Raising it makes more ranks available; the season start, auto-assign,
+#  /rsmp commands, Discord roles, leaderboard, LuckPerms and the database
+#  all follow. Players keep their rank when you add rows.
+#  Do not lower the highest row mid-season: players holding a rank above
+#  it lose that rank the next time /rsmp fix runs.
+# ============================================================================
+
+ranks:
+  -1: { prefix: "&0[&8BLACKLISTED&0] &r", suffix: "" }
+  0:  { hearts: 10.0, xp: 1.0, potion: 1.0,  slots: 0,   prefix: "&e[&7UNRANKED&e] &r", suffix: "" }
+  1:  { hearts: 20.0, xp: 3.0, potion: 2.0,  slots: 54,  prefix: "&e[#1] &r", suffix: "" }
+  2:  { hearts: 19.5, xp: 2.9, potion: 1.96, slots: 54,  prefix: "&e[#2] &r", suffix: "" }
+  3:  { hearts: 19.0, xp: 2.8, potion: 1.91, slots: 50,  prefix: "&e[#3] &r", suffix: "" }
+  4:  { hearts: 18.5, xp: 2.7, potion: 1.86, slots: 45,  prefix: "&e[#4] &r", suffix: "" }
+  5:  { hearts: 18.0, xp: 2.6, potion: 1.81, slots: 40,  prefix: "&e[#5] &r", suffix: "" }
+  6:  { hearts: 17.5, xp: 2.5, potion: 1.76, slots: 35,  prefix: "&e[#6] &r", suffix: "" }
+  7:  { hearts: 17.0, xp: 2.4, potion: 1.71, slots: 30,  prefix: "&e[#7] &r", suffix: "" }
+  8:  { hearts: 16.5, xp: 2.3, potion: 1.66, slots: 25,  prefix: "&e[#8] &r", suffix: "" }
+  9:  { hearts: 16.0, xp: 2.2, potion: 1.61, slots: 20,  prefix: "&e[#9] &r", suffix: "" }
+  10: { hearts: 15.5, xp: 2.1, potion: 1.56, slots: 15,  prefix: "&e[#10] &r", suffix: "" }
+  11: { hearts: 15.0, xp: 2.0, potion: 1.51, slots: 0,   prefix: "&e[#11] &r", suffix: "" }
+  12: { hearts: 14.5, xp: 1.9, potion: 1.46, slots: 0,   prefix: "&e[#12] &r", suffix: "" }
+  13: { hearts: 14.0, xp: 1.8, potion: 1.41, slots: 0,   prefix: "&e[#13] &r", suffix: "" }
+  14: { hearts: 13.5, xp: 1.7, potion: 1.36, slots: 0,   prefix: "&e[#14] &r", suffix: "" }
+  15: { hearts: 13.0, xp: 1.6, potion: 1.31, slots: 0,   prefix: "&e[#15] &r", suffix: "" }
+  16: { hearts: 12.5, xp: 1.5, potion: 1.26, slots: 0,   prefix: "&e[#16] &r", suffix: "" }
+  17: { hearts: 12.0, xp: 1.4, potion: 1.21, slots: 0,   prefix: "&e[#17] &r", suffix: "" }
+  18: { hearts: 11.5, xp: 1.3, potion: 1.16, slots: 0,   prefix: "&e[#18] &r", suffix: "" }
+  19: { hearts: 11.0, xp: 1.2, potion: 1.11, slots: 0,   prefix: "&e[#19] &r", suffix: "" }
+  20: { hearts: 10.5, xp: 1.1, potion: 1.05, slots: 0,   prefix: "&e[#20] &r", suffix: "" }
+  # 21: { hearts: 15.0, xp: 2.0, potion: 1.51, slots: 0,   prefix: "&e[#21] &r", suffix: "" }   <- example: remove the # to add rank 21

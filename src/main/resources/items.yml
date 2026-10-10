@@ -1,0 +1,115 @@
+# ============================================================================
+#  RankedSMPX - items.yml
+#  Hierarchy Hammer, Diamond Spear and Dragon Egg.
+#  After editing, run /rsmp reload.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+#  HIERARCHY HAMMER
+# ----------------------------------------------------------------------------
+hierarchy-hammer:
+  enabled: true
+  # Give everyone a hammer when the season starts. Otherwise: /rsmp give hammer <player>
+  auto-give-on-start: false
+  # Item name and lore.
+  name: "§x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§b§6§b§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§b§9§0§lᴍ§x§f§2§b§0§9§6§lᴇ§x§f§2§b§3§9§c§lʀ"
+  lore:
+    - "&7A powerful hammer that manifested"
+    - "&7as a result of improper judgement"
+    - ""
+    - "&6SENTENCING &fRMB"
+    - "&7Launch forward, allowing you to initiate"
+    - "&7hits with the weapon. This dash will stop"
+    - "&7cooldown when a successful hit is initiated."
+    - "&7Missing an attack will put it on cooldown."
+    - ""
+    - "&6VERDICT"
+    - "&7After hitting 3 consecutive hits without"
+    - "&7missing, your next hit is empowered."
+  # Custom texture. 0 / empty = default.
+  # item-model takes a namespaced id, e.g. "minecraft:custom_hammer".
+  custom-model-data: 0
+  model-id: 0
+  item-model: ""
+  # Seconds between dashes (0 = none, a miss or Verdict still sets a cooldown).
+  dash-cooldown: 0
+  # Dash speed multiplier.
+  dash-speed: 1.0
+  # Smash hits needed before the next one triggers the Verdict.
+  combo-required: 3
+  # Multiplier on verdict-damage.
+  combo-damage-multiplier: 1.0
+  # Verdict explosion power (0 = off, 4.0 = TNT).
+  combo-explosion-power: 0.0
+  # Seconds without a smash before the combo resets (0 = never).
+  combo-reset-time: 5
+  # Cooldown after a miss, seconds.
+  miss-cooldown: 10
+  # Cooldown after a Verdict, seconds.
+  verdict-cooldown: 30
+  # Verdict damage (40.0 = 20 hearts).
+  verdict-damage: 40.0
+
+  # Bonus damage when hitting while falling.
+  mace-smash:
+    enabled: true
+    # 1.0 = vanilla mace damage, 2.0 = double.
+    damage-multiplier: 1.0
+    # Minimum fall (blocks) for the bonus and for a combo smash.
+    min-fall-distance: 1.5
+
+  # Dash trail particles.
+  particles:
+    enabled: true
+
+  # Block storing it in chests, barrels, shulkers, hoppers, /inv, etc.
+  prevent-storage: true
+  # Block dropping it with Q.
+  prevent-drop: false
+
+  # Particle skull where a player dies holding the hammer.
+  death-effect:
+    enabled: true
+    # How long the effect lasts, in seconds.
+    duration: 5
+    skull:
+      enabled: true
+      # Density; higher = more particles.
+      density: 20
+      # Skull size multiplier.
+      size: 1.0
+      # Bukkit Particle names.
+      particles:
+        - ASH
+        - WHITE_ASH
+        - SMOKE
+
+# ----------------------------------------------------------------------------
+#  DIAMOND SPEAR
+# ----------------------------------------------------------------------------
+# Needs Minecraft 1.21.11 or newer. Always a diamond spear.
+spear:
+  # Turns itself off on servers older than 1.21.11.
+  enabled: true
+  # Infinite durability.
+  unbreakable: true
+  # Block storing it in chests, barrels, shulkers, hoppers, /inv, etc.
+  prevent-storage: true
+  # Block dropping it with Q.
+  prevent-drop: true
+  # Enchantments applied to the spear, as NAME: level (LUNGE, SHARPNESS, KNOCKBACK, UNBREAKING, MENDING...).
+  enchantments:
+    LUNGE: 3
+    # SHARPNESS: 5
+    # KNOCKBACK: 2
+
+# ----------------------------------------------------------------------------
+#  DRAGON EGG
+# ----------------------------------------------------------------------------
+# Shows the Dragon Egg carrier on the locator bar (Minecraft 1.21.6+).
+dragon-egg-locator:
+  enabled: true
+  # Block storing it in chests, barrels, shulkers, hoppers, /inv, etc.
+  prevent-storage: true
+  # Block dropping it with Q.
+  prevent-drop: false

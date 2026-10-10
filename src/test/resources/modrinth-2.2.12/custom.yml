@@ -1,0 +1,72 @@
+# ==============================================================================
+# RankedSMPX - Custom & Experimental Features Configuration
+# ==============================================================================
+# ⚠ WARNING:
+# Features in this file are experimental and designed for custom use cases.
+# They are not tested as extensively as core plugin features — USE AT YOUR OWN RISK!
+# If you encounter any bugs, glitches, or unexpected behavior, please report them:
+# https://github.com/mukulx/RankedSMPX/issues
+#
+# All features in this file are DISABLED by default (enabled: false).
+# Enable features only if they match your server's specific custom gameplay style.
+# Run /rsmp reload after modifying this file to apply changes.
+# ==============================================================================
+
+# Rank Drop Feature
+# When enabled:
+# If a higher-ranked player (e.g. Rank 1) kills a lower-ranked player (e.g. Rank 2),
+# the victim loses their rank, and a physical Rank Item (Black Dye) drops on the ground.
+# Players can store rank items in chests, trade them, or right-click to claim/swap.
+rank-drop:
+  # Enable or disable the entire rank-drop feature
+  enabled: false
+
+  # Item configuration
+  item:
+    # Material for the rank item (e.g. BLACK_DYE, NETHER_STAR, ECHO_SHARD, AMETHYST_SHARD)
+    material: "BLACK_DYE"
+    # Display name format. Placeholders: {rank}, {rank_prefix}
+    name: "&#FFAA00✦ &lRᴀɴᴋ {rank} &#FFAA00✦"
+    # Lore lines
+    lore:
+      - "&7Use this to claim &eRank #{rank}&7."
+      - ""
+      - "&6▶ &eRight-Click &7to claim or swap your rank."
+      - "&7Can be safely stored in chests or traded."
+    # Add enchantment glow to the item
+    glow: true
+
+  # Allow right-clicking to claim or swap the rank item:
+  # - Unranked player -> Claims rank (item is consumed)
+  # - Ranked player -> Swaps current rank with item rank (item transforms into player's old rank)
+  claim-enabled: true
+
+  # Cooldown in seconds between claiming or swapping ranks (default: 10 seconds)
+  claim-cooldown: 10
+
+  # Broadcast message when a rank drops
+  broadcast-on-drop: true
+
+  # Sound effects
+  sounds:
+    claim:
+      enabled: true
+      sound: "ENTITY_PLAYER_LEVELUP"
+      volume: 1.0
+      pitch: 1.2
+    swap:
+      enabled: true
+      sound: "ITEM_ARMOR_EQUIP_NETHERITE"
+      volume: 1.0
+      pitch: 1.0
+
+  # Messages - Uses standard plugin prefix {prefix} and configured rank formats
+  messages:
+    drop-victim: "{prefix}&cYou were eliminated by &e{killer} &cand dropped your &6Rank #{rank}&c!"
+    drop-killer: "{prefix}&aYou eliminated &e{victim}&a! Their &6Rank #{rank} &adropped on the ground."
+    drop-broadcast: "{prefix}&e{killer} &7eliminated &e{victim}&7! &6Rank #{rank} &7has dropped!"
+    claim-success: "{prefix}&aYou claimed &6Rank #{rank}&a! Health and perks updated."
+    swap-success: "{prefix}&aYou swapped your &6Rank #{old_rank} &afor &6Rank #{new_rank}&a!"
+    already-rank: "{prefix}&cYou already have &6Rank #{rank}&c!"
+    cooldown: "{prefix}&cYou must wait &e{seconds}s &cbefore claiming or swapping ranks again!"
+    cannot-craft: "{prefix}&cRank items cannot be used in crafting recipes!"

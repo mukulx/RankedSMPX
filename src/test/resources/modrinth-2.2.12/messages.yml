@@ -1,0 +1,199 @@
+# ██████╗  █████╗ ███╗   ██╗██╗  ██╗███████╗██████╗ ███████╗███╗   ███╗██████╗ ██╗  ██╗
+# ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝██╔════╝██╔══██╗██╔════╝████╗ ████║██╔══██╗╚██╗██╔╝
+# ██████╔╝███████║██╔██╗ ██║█████╔╝ █████╗  ██║  ██║███████╗██╔████╔██║██████╔╝ ╚███╔╝ 
+# ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ ██╔══╝  ██║  ██║╚════██║██║╚██╔╝██║██╔═══╝  ██╔██╗ 
+# ██║  ██║██║  ██║██║ ╚████║██║  ██╗███████╗██████╔╝███████║██║ ╚═╝ ██║██║     ██╔╝ ██╗
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝
+#
+# Author: mukulx
+# Modrinth: https://modrinth.com/project/rankedsmpx
+# Discord: https://discord.gg/QGsJYht2vy
+# Issues: https://github.com/mukulx/RankedSMPX/issues
+#
+# ═══════════════════════════════════════════════════════════════════════════════════════
+# MESSAGE FORMAT SUPPORT
+# ═══════════════════════════════════════════════════════════════════════════════════════
+# This file supports BOTH legacy color codes AND modern MiniMessage format!
+#
+# LEGACY FORMAT (Traditional Minecraft):
+#   &a = green, &b = aqua, &c = red, &e = yellow, &6 = gold
+#   &#FF5555 = hex color (RGB)
+#   Example: "&aHello &b&lWorld"
+#
+# MINIMESSAGE FORMAT (Modern, recommended):
+#   <green>text</green>, <aqua>text</aqua>, <red>text</red>
+#   <#FF5555>text</#FF5555> = hex color
+#   <gradient:#FF0000:#00FF00>text</gradient> = gradient
+#   <bold>text</bold>, <italic>text</italic>, <underlined>text</underlined>
+#   Example: "<gradient:#FF0000:#00FF00>Rainbow Text</gradient>"
+#   Example: "<#FF5555><bold>Bold Red Text</bold></#FF5555>"
+#
+# SMALL CAPS SUPPORT:
+#   Small caps work with BOTH formats! Text inside tags is converted to small caps
+#   while preserving all formatting and colors.
+#   Example: "<gradient:#FF0000:#00FF00>Hello World</gradient>" → "ʜᴇʟʟᴏ ᴡᴏʀʟᴅ" with gradient
+#   Example: "&aHello &bWorld" → "ʜᴇʟʟᴏ ᴡᴏʀʟᴅ" with colors
+#   Disable in config.yml: small-caps-messages: false
+#
+# You can mix both formats in the same file!
+# ═══════════════════════════════════════════════════════════════════════════════════════
+
+settings:
+  prefix: "&bRankedSMPX &8» &r"
+  use-prefix: true
+
+errors:
+  player-only: "{prefix}&cThis command can only be used by players!"
+  feature-disabled: "{prefix}&cThis feature is currently disabled!"
+  player-not-found: "{prefix}&cPlayer '{player}' not found!"
+
+general:
+  no-permission: "{prefix}&cYou don't have permission to do that!"
+  player-not-found: "{prefix}&cPlayer '{player}' not found!"
+  player-not-online: "{prefix}&cPlayer '{player}' is not online!"
+  reload-success: "{prefix}&aConfiguration reloaded successfully!"
+  game-not-started: "{prefix}&cRanks have not been assigned yet!"
+  invalid-rank: "{prefix}&cInvalid rank! Must be between 1 and {max}."
+  feature-disabled: "{prefix}&cThis feature is currently disabled!"
+
+commands:
+  help:
+    header: "&8&m━━━━━━━━━━━&r &6✦ &lRankedSMP X &6✦ &8&m━━━━━━━━━━━"
+    admin: "&b/rsmp start &8» &dAssign ranks to all players"
+    stop: "&b/rsmp stop &8» &dReset all ranks"
+    reload: "&b/rsmp reload &8» &7Reload configuration"
+    gui: "&b/rsmp gui &8» &7Open rank management GUI"
+    set: "&b/rsmp set <player> <rank> &8» &7Set player rank"
+    remove: "&b/rsmp remove <player> &8» &7Remove player rank"
+    hammer: "&b/rsmp hammer &8» &6Get the Hierarchy Hammer"
+    info: "&b/rankinfo [player] &8» &eView rank buffs & info"
+    top: "&b/ranktop &8» &eView top ranked players"
+    footer: "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  start:
+    already-started: "{prefix}&cRanks have already been assigned!"
+    success: "{prefix}&a&l✓ &aRanks assigned to &e{count} &aplayers!"
+    broadcast: "{prefix}&6✦ &lRANKS ASSIGNED! &bCheck &e/rankinfo"
+    title: "&6&l✦ &e&lRankedSMP &6&l✦"
+    subtitle: "&d&lAssigning ranks..."
+    rank-title: "&6&l⚡ Rank #{rank} &6&l⚡"
+    rank-subtitle: "&a&lYou have been ranked!"
+    assignment-header: "&8&m━━━━━━━━━━━━━━━&r &6✦ &lThe Rankings &6✦ &8&m━━━━━━━━━━━━━━━"
+    assignment: "  &b➤ &f{player} &8→ {rank_prefix}"
+    assignment-footer: "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  stop:
+    not-started: "{prefix}&cNo ranks are currently active!"
+    confirm: "{prefix}&e&l⚠ WARNING! &7This will reset &c&l{count} &7player ranks!"
+    confirm-line2: "{prefix}&7Type &b/rsmp stop &7again within &e{time}s &7to confirm."
+    confirm-expired: "{prefix}&7Confirmation expired. Run the command again."
+    success: "{prefix}&a&l✓ &aAll ranks have been cleared."
+    broadcast: "{prefix}&c✦ &lRANKS RESET! &7All player ranks have been cleared."
+    title: "&c&l✦ Ranks Reset ✦"
+    subtitle: "&7All ranks have been cleared"
+  
+  set:
+    usage: "{prefix}&cUsage: /rsmp set <player> <rank>"
+    success: "{prefix}&aSet {player}'s rank to &6#{rank}&a!"
+    target-notify: "{prefix}&aYour rank has been set to &6#{rank}&a!"
+  
+  remove:
+    usage: "{prefix}&cUsage: /rsmp remove <player>"
+    no-rank: "{prefix}&c{player} doesn't have a rank!"
+    success: "{prefix}&aRemoved {player}'s rank!"
+    target-notify: "{prefix}&cYour rank has been removed!"
+
+rank:
+  change:
+    broadcast-gained: "&6⭐ &e{player} &7has gained &6Rank #{rank} &8(&7{reason}&8)"
+    broadcast-lost: "&c⚠ &e{player} &7has dropped to &6Rank #{rank} &8(&7was &a#{old_rank}&8) &8(&7{reason}&8)"
+    title-gained: "&6&l✦ RANK #{rank} ✦"
+    subtitle-gained: "&a&lYou gained a rank!"
+    title-lost: "&c&l✦ RANK #{rank} ✦"
+    subtitle-lost: "&c&lYou lost your rank!"
+  
+  info:
+    header: "&8&m━━━━━━━━━━━&r &6✦ &lRank Info &6✦ &8&m━━━━━━━━━━━"
+    your-rank: "&e  Your Rank: &6&l#{rank} &8/ &7{total}"
+    player-rank: "&e  {player}'s Rank: &6&l#{rank} &8/ &7{total}"
+    unranked: "&7  Rank: &8Unranked"
+    hearts: "&c  • Hearts: &f{hearts}"
+    potion-boost: "&d  • Potion Duration: &f{multiplier}x"
+    xp-boost: "&a  • XP Multiplier: &f{multiplier}x"
+    extra-slots: "&b  • Extra Slots: &f{slots}"
+    footer: "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  top:
+    header: "&8&m━━━━━━━━━━━&r &6✦ &lTop Players &6✦ &8&m━━━━━━━━━━━"
+    entry: "  &6&l#{rank} &8» &e{player}"
+    footer: "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  steal:
+    success: "{prefix}&a✦ &lRANK STOLEN! &eYou are now &6#{rank} &7(was &c#{old_rank}&7)"
+    victim: "{prefix}&c✦ &lRANK LOST! &7You dropped to &6#{rank} &7(was &a#{old_rank}&7)"
+    broadcast: "{prefix}&e{killer} &7stole &e{victim}'s &7rank! &6Now #{rank}"
+    cooldown: "{prefix}&cCooldown: &e{time}s &cremaining!"
+    same-rank: "{prefix}&cYou can only steal from &ehigher-ranked &cplayers!"
+    max-difference: "{prefix}&cRank gap too large! &7(Max: &e{max}&7)"
+  
+  transfer:
+    usage: "{prefix}&cUsage: /ranktransfer <player>"
+    success: "{prefix}&aYou transferred your &6#{rank} &ato &e{player}&a!"
+    received: "{prefix}&a&lRANK RECEIVED! &eYou received &6#{rank} &efrom &e{player}&e!"
+    broadcast: "{prefix}&6{from} &etransferred their &6#{rank} &eto &6{to}&e!"
+    no-rank: "{prefix}&cYou don't have a rank to transfer!"
+    self: "{prefix}&cYou can't transfer your rank to yourself!"
+    target-has-rank: "{prefix}&c{player} already has a rank!"
+
+hammer:
+  received: "{prefix}&aYou received the §x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§e§6§e§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§e§9§0§lᴍ§x§f§2§e§0§9§6§lᴇ§x§f§2§e§3§9§c§lʀ&a!"
+  received-title: "&6&lYou Received"
+  received-subtitle: "§x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§e§6§e§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§e§9§0§lᴍ§x§f§2§e§0§9§6§lᴇ§x§f§2§e§3§9§c§lʀ"
+  dropped: "&c&l✦ &cThe §x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§e§6§e§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§e§9§0§lᴍ§x§f§2§e§0§9§6§lᴇ§x§f§2§e§3§9§c§lʀ &chas been dropped!"
+  dropped-subtitle: "&7You no longer possess the hammer."
+  new-rank-one: "&6&l✦ &eYou are now the hammer's wielder!"
+  dropped-find: "&7The §x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§e§6§e§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§e§9§0§lᴍ§x§f§2§e§0§9§6§lᴇ§x§f§2§e§3§9§c§lʀ &7has been dropped. Find it to claim your power!"
+  ask-admin: "&7Ask an admin to give you the §x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§e§6§e§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§e§9§0§lᴍ§x§f§2§e§0§9§6§lᴇ§x§f§2§e§3§9§c§lʀ &7with &e/rsmp give hammer"
+  miss-cooldown: "&6&lYou missed, &e&lnow on cooldown for &c&l{time}s"
+
+dragon-egg:
+  locator:
+    bar-title: "&6Players Nearby &7({count})"
+    player-entry: "&e{player} &7- &f{distance}m"
+
+gui:
+  rank-management:
+    title: "&0Rank Management"
+    player-item:
+      name: "&6#{rank} &e{player}"
+      lore:
+        - "&7Click to view options"
+        - ""
+        - "&eLeft-click: &7Move rank"
+        - "&eRight-click: &7Remove rank"
+        - "&eShift-click: &7Swap with another"
+    empty-slot:
+      name: "&7Empty Rank Slot"
+      lore:
+        - "&7No player assigned"
+    info-item:
+      name: "&6Rank Statistics"
+      lore:
+        - "&7Total Ranks: &e{total}"
+        - "&7Assigned: &a{assigned}"
+        - "&7Available: &e{available}"
+
+discord:
+  not-enabled: "{prefix}&cDiscord integration is not enabled!"
+  bot-required: "{prefix}&cDiscord bot configuration is required for Discord integration!"
+  enabled: "{prefix}&aDiscord integration enabled!"
+  disabled: "{prefix}&cDiscord integration disabled!"
+  update-forced: "{prefix}&aForcing leaderboard update..."
+  status:
+    header: "{prefix}&eDiscord Integration Status:"
+    config-enabled: "&7Enabled in config: {status}"
+    bot-available: "&7Discord bot available: {status}"
+    discord-ready: "&7Discord ready: {status}"
+    channel-set: "&7Leaderboard channel: {channel}"
+    update-interval: "&7Update interval: &e{interval}s"
+  channel-set: "&a✅ Leaderboard channel set to <#{channel}>!\nThe leaderboard will be posted here and updated automatically every {interval} seconds."

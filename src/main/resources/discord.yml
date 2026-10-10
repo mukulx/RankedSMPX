@@ -1,0 +1,88 @@
+# Discord integration. Add your bot token and guild ID, then set enabled to true.
+enabled: false
+config-version: 2 # Managed by the plugin.
+
+# Shared embed details.
+discord-invite: "https://discord.gg/QGsJYht2vy"
+embed-footer-name: "RankedSMPX"
+
+# Bot credentials and presence. Create a bot at https://discord.com/developers/applications.
+bot:
+  token: "YOUR_BOT_TOKEN_HERE"
+  guild-id: "YOUR_GUILD_ID_HERE"
+  activity:
+    type: "PLAYING" # PLAYING, WATCHING, LISTENING, or COMPETING
+    message: "RankedSMP X | /rank"
+  clear-previous-commands: false
+
+# Account linking.
+linking:
+  enabled: true
+  required: false
+  kick-message: "&cYou must link your Discord account to play!\n&bYour linking code: &b{code}\n&7Use /link {code} in the Discord server to link your account."
+  remind-on-join: true
+  reminder-message: "&b&l[!] &7Link your Discord account with &a/linkdiscord &7for exclusive features!"
+  code-expiration: 10 # Minutes
+  allow-unlink: true
+
+# Leaderboard message. Set channel-id with /setchannel leaderboard.
+leaderboard:
+  enabled: true
+  channel-id: ""
+  message-id: "" # Managed by the plugin.
+  update-interval: 300 # Seconds; minimum 60
+  show-unlinked: true
+  max-players: 20 # 0 shows everyone
+  color: "#00FFFF"
+
+# Direct messages for rank changes.
+notifications:
+  enabled: true
+  notify-on-gain: true
+  notify-on-loss: true
+  notify-on-death: true
+  notify-on-admin-change: true
+  color: "#FFD700"
+
+# Rank roles. Role IDs are managed by the plugin unless set manually.
+role-sync:
+  enabled: false
+  auto-create-roles: true
+  unranked-role: "Unranked"
+  unranked-role-id: ""
+  rank-role-ids: {}
+  mod-role-id: "" # Optional role for users with rankedsmp.discord.mod permission
+  remove-mod-role-without-permission: false
+  colors:
+    rank-1: "#FFD700"
+    rank-2-3: "#C0C0C0"
+    rank-4-10: "#CD7F32"
+    rank-11-plus: "#808080"
+    unranked: "#696969"
+
+# Server announcements. Set channel-id with /setchannel updates.
+updates:
+  enabled: false
+  channel-id: ""
+  announce-game-start: true
+  announce-game-end: true
+  announce-rank-changes: false
+  announce-player-join: false
+  announce-player-leave: false
+  announce-player-death: false
+
+# Discord slash commands.
+commands:
+  help: true
+  rank: true
+  rankset: true
+  rankrandom: true
+  setchannel: true
+  rankexport: true
+  rankimport: true
+  link: true
+  unlink: true
+
+# Diagnostics.
+debug:
+  enabled: false

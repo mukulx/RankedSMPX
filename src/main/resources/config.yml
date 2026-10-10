@@ -1,0 +1,203 @@
+# ============================================================================
+#  RankedSMPX - config.yml
+#  After editing, run /rsmp reload.
+#
+#  Other files:
+#    ranks.yml     hearts, XP, potion boost, extra slots, prefixes per rank
+#    items.yml     Hierarchy Hammer, Diamond Spear, Dragon Egg
+#    custom.yml    experimental extras (rank drop item)
+#    messages.yml  every chat message and title
+#    discord.yml   Discord bot, linking, leaderboard
+# ============================================================================
+
+config-version: 20 # Managed by the plugin. Do not edit.
+
+# ----------------------------------------------------------------------------
+#  GENERAL
+# ----------------------------------------------------------------------------
+
+# Show plugin messages in small caps (ʜᴇʟʟᴏ).
+small-caps-messages: true
+
+# Put the plugin prefix (set in messages.yml) in front of plugin messages.
+message-prefix: false
+
+# Show title messages to players. false turns all of them off.
+titles: true
+
+# Extra console logging for troubleshooting.
+debug: false
+
+# ----------------------------------------------------------------------------
+#  SEASON
+#  The number of ranks = the number of rows in ranks.yml.
+# ----------------------------------------------------------------------------
+
+season:
+  # A killer takes the victim's rank.
+  rank-stealing:
+    enabled: true
+    # Max rank gap allowed for a steal (0 = no limit).
+    max-rank-difference: 0
+    # Seconds between steals (0 = none).
+    cooldown: 0
+
+  # Take the rank from players who stay offline too long. Works while they are offline.
+  inactivity:
+    enabled: false
+    # Time offline before the rank is taken. Examples: 12h, 3d, 1d12h.
+    after: 7d
+    # remove = the rank is freed. reroll = it goes to a random online player without a rank.
+    action: reroll
+    # How often to check.
+    check-interval: 30m
+    # Players who never lose their rank (names or UUIDs).
+    exempt: []
+
+  death-effects:
+    # Strike lightning where a player dies to PvP.
+    lightning-on-kill: false
+
+# Hand out ranks left over at season start to players who join later.
+auto-assign-ranks:
+  enabled: true
+
+# ----------------------------------------------------------------------------
+#  DISPLAY
+# ----------------------------------------------------------------------------
+
+# Show the rank next to player names in:
+rank-display:
+  show-in-chat: false
+  show-on-join: true
+  show-on-leave: true
+  show-on-death: true
+
+# Rank prefix/suffix in the tab list and above heads (set per rank in ranks.yml).
+# Uses the TAB plugin if installed (RGB, gradients), otherwise vanilla teams (&-codes only).
+#   /rsmp modern    gradient prefixes (TAB only)
+#   /rsmp original  classic prefixes
+tab-integration:
+  enabled: true
+
+# ----------------------------------------------------------------------------
+#  PLAYER STATS
+#  Hearts, XP, potion boost and slots per rank are in ranks.yml.
+# ----------------------------------------------------------------------------
+
+health:
+  # How max health is applied:
+  #   MODIFIER    Attribute modifier. Works alongside other plugins.
+  #   DIRECT      Sets base max health. Use if nothing else changes health.
+  #   AGGRESSIVE  Removes other health modifiers and re-checks on a timer.
+  #               Only if another plugin keeps overriding health.
+  mode: MODIFIER
+  # Re-apply rank health on respawn.
+  apply-on-respawn: true
+  # Only used in AGGRESSIVE mode.
+  aggressive:
+    # Seconds between re-checks.
+    recheck-interval: 5
+    # Remove other plugins' health modifiers.
+    remove-other-modifiers: true
+
+potions:
+  # Also boost effects from other plugins and custom items.
+  extend-custom-effects: true
+  # Effects the potion boost never applies to.
+  ignored-effects:
+    - DARKNESS
+    - POISON
+    - WITHER
+    - HUNGER
+    - WEAKNESS
+    - SLOWNESS
+    - MINING_FATIGUE
+    - NAUSEA
+    - BLINDNESS
+    - INSTANT_DAMAGE
+    - UNLUCK
+    - BAD_OMEN
+    - RAID_OMEN
+    - LEVITATION
+
+# Extra inventory (/inv). Slots per rank are in ranks.yml.
+inventory:
+  enabled: true
+  # Block common dupe tricks.
+  anti-dupe: true
+  # Drop the contents on death.
+  drop-on-death: true
+  combat:
+    # Block /inv in combat.
+    disabled-during-combat: false
+    # Seconds in combat after damage dealt or taken.
+    combat-duration: 10
+
+# Let players give their rank to someone else.
+rank-transfer:
+  enabled: false
+  # Allow offline targets.
+  allow-offline: false
+
+# ----------------------------------------------------------------------------
+#  SOUNDS
+#  Sound names: https://jd.papermc.io/paper/1.21.11/org/bukkit/Sound.html
+# ----------------------------------------------------------------------------
+
+sounds:
+  # Season starts (everyone).
+  season-start:
+    enabled: true
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 1.0
+    pitch: 1.0
+  # Player's rank is revealed.
+  rank-reveal:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.2
+  # Rank announced in chat.
+  rank-broadcast:
+    enabled: true
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 0.5
+    pitch: 1.5
+  # Season stops (everyone).
+  season-stop:
+    enabled: true
+    sound: ENTITY_WITHER_DEATH
+    volume: 0.8
+    pitch: 1.0
+
+# ----------------------------------------------------------------------------
+#  INTEGRATIONS
+# ----------------------------------------------------------------------------
+
+# LuckPerms contexts: rankedsmp:rank (number, unranked, blacklisted) and
+# rankedsmp:ranked (true/false).
+luckperms:
+  enabled: false
+  register-contexts: true
+  # Refresh LuckPerms data when a rank changes.
+  sync-on-rank-change: true
+
+database:
+  # sqlite or mysql
+  type: sqlite
+  sqlite-file: rankedsmp.db
+  # MySQL only.
+  mysql:
+    host: localhost
+    port: 3306
+    database: rankedsmp
+    username: root
+    password: password
+    # Pool sizes; times in milliseconds.
+    pool:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000

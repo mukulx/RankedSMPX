@@ -1,0 +1,55 @@
+# ============================================================================
+#  RankedSMPX - custom.yml
+#  Experimental extras, all off by default. After editing, run /rsmp reload.
+#  Bugs: https://github.com/mukulx/RankedSMPX/issues
+# ============================================================================
+
+# Rank drop: when a higher-ranked player kills a lower-ranked one, the victim
+# loses their rank and a Rank Item drops. Right-click it to claim or swap.
+rank-drop:
+  enabled: false
+
+  item:
+    # Item material, e.g. BLACK_DYE, NETHER_STAR, ECHO_SHARD.
+    material: "BLACK_DYE"
+    # Placeholders: {rank}, {rank_prefix}
+    name: "&#FFAA00&lRᴀɴᴋ {rank} &#FFAA00"
+    lore:
+      - "&7Use this to claim &bRank #{rank}&7."
+      - ""
+      - "&6▶ &bRight-Click &7to claim or swap your rank."
+      - "&7Can be safely stored in chests or traded."
+    # Enchant glow.
+    glow: true
+
+  # Right-click to claim (unranked) or swap (ranked) the rank.
+  claim-enabled: true
+
+  # Seconds between claims/swaps.
+  claim-cooldown: 10
+
+  # Announce drops in chat.
+  broadcast-on-drop: true
+
+  sounds:
+    claim:
+      enabled: true
+      sound: "ENTITY_PLAYER_LEVELUP"
+      volume: 1.0
+      pitch: 1.2
+    swap:
+      enabled: true
+      sound: "ITEM_ARMOR_EQUIP_NETHERITE"
+      volume: 1.0
+      pitch: 1.0
+
+  # Messages. {prefix} is the plugin prefix.
+  messages:
+    drop-victim: "{prefix}&cYou were eliminated by &b{killer} &cand dropped your &6Rank #{rank}&c!"
+    drop-killer: "{prefix}&aYou eliminated &b{victim}&a! Their &6Rank #{rank} &adropped on the ground."
+    drop-broadcast: "{prefix}&b{killer} &7eliminated &b{victim}&7! &6Rank #{rank} &7has dropped!"
+    claim-success: "{prefix}&aYou claimed &6Rank #{rank}&a! Health and perks updated."
+    swap-success: "{prefix}&aYou swapped your &6Rank #{old_rank} &afor &6Rank #{new_rank}&a!"
+    already-rank: "{prefix}&cYou already have &6Rank #{rank}&c!"
+    cooldown: "{prefix}&cYou must wait &b{seconds}s &cbefore claiming or swapping ranks again!"
+    cannot-craft: "{prefix}&cRank items cannot be used in crafting recipes!"

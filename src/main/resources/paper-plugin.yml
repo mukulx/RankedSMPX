@@ -1,0 +1,74 @@
+name: RankedSMPX
+version: ${version}
+main: dev.mukulx.rankedsmpx.RankedSMPXPlugin
+loader: dev.mukulx.rankedsmpx.PaperPluginLoader
+api-version: '1.21'
+folia-supported: true
+author: mukulx
+description: A competitive ranked SMP plugin with rank-based perks, combat mechanics, and progression systems
+website: https://github.com/mukulx/RankedSMPX
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    TAB:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    LuckPerms:
+      load: BEFORE
+      required: false
+      join-classpath: true
+
+permissions:
+  rankedsmp.admin:
+    description: Access to all admin commands
+    default: op
+  rankedsmp.start:
+    description: Start the ranking game
+    default: op
+  rankedsmp.stop:
+    description: Stop the ranking game
+    default: op
+  rankedsmp.reload:
+    description: Reload the plugin
+    default: op
+  rankedsmp.gui:
+    description: Open rank management GUI
+    default: op
+  rankedsmp.set:
+    description: Set a player's rank
+    default: op
+  rankedsmp.remove:
+    description: Remove a player's rank
+    default: op
+  rankedsmp.info:
+    description: View rank information
+    default: true
+  rankedsmp.bypass.steal:
+    description: Bypass rank stealing
+    default: false
+  rankedsmp.blacklist:
+    description: Manage rank blacklist
+    default: op
+  rankedsmp.history:
+    description: View rank history
+    default: true
+  rankedsmp.historywipe:
+    description: Wipe rank history
+    default: op
+  rankedsmp.export:
+    description: Export rank data
+    default: op
+  rankedsmp.import:
+    description: Import rank data
+    default: op
+  rankedsmp.extrainvsee:
+    description: View and edit player extra inventories
+    default: op
+  rankedsmp.discord.mod:
+    description: Receive the Discord moderator role (discord.yml role-sync.mod-role-id)
+    default: false

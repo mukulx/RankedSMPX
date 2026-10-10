@@ -1,0 +1,59 @@
+name: Feature request
+description: Suggest an idea or improvement for RankedSMPX
+title: "[Feature] "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [open issues](https://github.com/mukulx/RankedSMP/issues) first so the idea is not already requested.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Ranks and season
+        - Hearts, XP, potions or extra inventory
+        - Hierarchy Hammer
+        - Diamond Spear or Dragon Egg locator
+        - Discord bot
+        - Config
+        - Commands and permissions
+        - Dialogs and GUIs
+        - API
+        - Integrations (TAB, LuckPerms, PlaceholderAPI)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can't you do today, or what is annoying?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How it should work. Include example commands, config keys or messages if you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Workarounds or other plugins you use for this now.
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you work on this yourself?
+      options:
+        - "No"
+        - "Yes, with guidance"
+        - "Yes"

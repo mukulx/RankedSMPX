@@ -1,0 +1,254 @@
+# ██████╗  █████╗ ███╗   ██╗██╗  ██╗███████╗██████╗ ███████╗███╗   ███╗██████╗ ██╗  ██╗
+# ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝██╔════╝██╔══██╗██╔════╝████╗ ████║██╔══██╗╚██╗██╔╝
+# ██████╔╝███████║██╔██╗ ██║█████╔╝ █████╗  ██║  ██║███████╗██╔████╔██║██████╔╝ ╚███╔╝ 
+# ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ ██╔══╝  ██║  ██║╚════██║██║╚██╔╝██║██╔═══╝  ██╔██╗ 
+# ██║  ██║██║  ██║██║ ╚████║██║  ██╗███████╗██████╔╝███████║██║ ╚═╝ ██║██║     ██╔╝ ██╗
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝
+#
+# ██████╗ ██╗███████╗ ██████╗ ██████╗ ██████╗ ██████╗    
+# ██╔══██╗██║██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔══██╗    
+# ██║  ██║██║███████╗██║     ██║   ██║██████╔╝██║  ██║    
+# ██║  ██║██║╚════██║██║     ██║   ██║██╔══██╗██║  ██║    
+# ██████╔╝██║███████║╚██████╗╚██████╔╝██║  ██║██████╔╝   
+# ╚═════╝ ╚═╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝    
+#
+# Author: mukulx
+# Modrinth: https://modrinth.com/project/rankedsmpx
+# Discord: https://discord.gg/QGsJYht2vy
+# Issues: https://github.com/mukulx/RankedSMPX/issues
+#
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Enable Discord integration (requires bot token and guild ID)
+enabled: false
+
+# Config version (do not edit - used for automatic updates)
+config-version: 2
+
+# Discord Support Server Invite Link
+# This link is shown in the first-time setup message and help messages
+discord-invite: "https://discord.gg/QGsJYht2vy"
+
+# Embed Footer Name (appears in all Discord embeds)
+# Change this to customize the footer text in all Discord messages
+embed-footer-name: "RankedSMPX"
+
+# Discord Bot Configuration
+bot:
+  # Bot token from https://discord.com/developers/applications
+  # Get your bot token: https://discord.com/developers/applications → Your App → Bot → Token
+  # Example: "EXAMPLE_TOKEN"
+  token: "YOUR_BOT_TOKEN_HERE"
+  
+  # Your Discord server (guild) ID
+  # How to get: Enable Developer Mode in Discord → Right-click your server → Copy Server ID
+  # Example: "123456789012345678"
+  guild-id: "YOUR_GUILD_ID_HERE"
+  
+  # Bot activity status
+  activity:
+    type: "PLAYING" # PLAYING, WATCHING, LISTENING, COMPETING
+    message: "RankedSMP X | /rank"
+  # Clear previous slash commands before registering new ones
+  # Set to true to remove all old commands and register fresh ones
+  # Useful when you've changed command configurations or removed commands
+  clear-previous-commands: false
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+#  █████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███╗   ██╗████████╗    ██╗     ██╗███╗   ██╗██╗  ██╗██╗███╗   ██╗ ██████╗ 
+# ██╔══██╗██╔════╝██╔════╝██╔═══██╗██║   ██║████╗  ██║╚══██╔══╝    ██║     ██║████╗  ██║██║ ██╔╝██║████╗  ██║██╔════╝ 
+# ███████║██║     ██║     ██║   ██║██║   ██║██╔██╗ ██║   ██║       ██║     ██║██╔██╗ ██║█████╔╝ ██║██╔██╗ ██║██║  ███╗
+# ██╔══██║██║     ██║     ██║   ██║██║   ██║██║╚██╗██║   ██║       ██║     ██║██║╚██╗██║██╔═██╗ ██║██║╚██╗██║██║   ██║
+# ██║  ██║╚██████╗╚██████╗╚██████╔╝╚██████╔╝██║ ╚████║   ██║       ███████╗██║██║ ╚████║██║  ██╗██║██║ ╚████║╚██████╔╝
+# ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝       ╚══════╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Account Linking System
+linking:
+  # Enable Discord linking system
+  enabled: true
+  # Require Discord linking to play on the server
+  required: false
+  # Kick message if linking is required and player is not linked
+  # Use {code} placeholder for the linking code
+  kick-message: "&cYou must link your Discord account to play!\n&eYour linking code: &b{code}\n&7Use /link {code} in the Discord server to link your account."
+  # Show linking reminder on join
+  remind-on-join: true
+  # Reminder message
+  reminder-message: "&e&l[!] &7Link your Discord account with &a/linkdiscord &7for exclusive features!"
+  # Code expiration time in minutes
+  code-expiration: 10
+  # Allow unlinking
+  allow-unlink: true
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ██╗     ███████╗ █████╗ ██████╗ ███████╗██████╗ ██████╗  ██████╗  █████╗ ██████╗ ██████╗ 
+# ██║     ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██╔══██╗
+# ██║     █████╗  ███████║██║  ██║█████╗  ██████╔╝██████╔╝██║   ██║███████║██████╔╝██║  ██║
+# ██║     ██╔══╝  ██╔══██║██║  ██║██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔══██║██╔══██╗██║  ██║
+# ███████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝
+# ╚══════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Leaderboard Settings
+leaderboard:
+  # Enable automatic leaderboard updates
+  enabled: true
+  # Channel ID for leaderboard (set via /setchannel leaderboard or manually)
+  channel-id: ""
+  # Message ID of the leaderboard embed (auto-set, don't edit)
+  message-id: ""
+  # Update interval in seconds (minimum 60)
+  update-interval: 300
+  # Show unlinked players on leaderboard
+  show-unlinked: true
+  # Maximum players to show (0 = all)
+  max-players: 20
+  # Leaderboard title
+  title: "🏆 RankedSMP X Leaderboard"
+  # Leaderboard color (hex format)
+  color: "#00FFFF"
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ███╗   ██╗ ██████╗ ████████╗██╗███████╗██╗ ██████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+# ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██║██╔════╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+# ██╔██╗ ██║██║   ██║   ██║   ██║█████╗  ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+# ██║╚██╗██║██║   ██║   ██║   ██║██╔══╝  ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+# ██║ ╚████║╚██████╔╝   ██║   ██║██║     ██║╚██████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+# ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝╚═╝     ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Rank Notifications (DM players when rank changes)
+notifications:
+  # Enable DM notifications
+  enabled: true
+  # Notify when player gains a rank
+  notify-on-gain: true
+  # Notify when player loses a rank
+  notify-on-loss: true
+  # Notify when player reaches top 3
+  notify-top-3: true
+  # Notification color
+  color: "#FFD700"
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ██████╗  ██████╗ ██╗     ███████╗    ███████╗██╗   ██╗███╗   ██╗ ██████╗
+# ██╔══██╗██╔═══██╗██║     ██╔════╝    ██╔════╝╚██╗ ██╔╝████╗  ██║██╔════╝
+# ██████╔╝██║   ██║██║     █████╗      ███████╗ ╚████╔╝ ██╔██╗ ██║██║     
+# ██╔══██╗██║   ██║██║     ██╔══╝      ╚════██║  ╚██╔╝  ██║╚██╗██║██║     
+# ██║  ██║╚██████╔╝███████╗███████╗    ███████║   ██║   ██║ ╚████║╚██████╗
+# ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝    ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Role Synchronization
+role-sync:
+  # Enable automatic role assignment based on ranks
+  enabled: false
+  # Create roles automatically if they don't exist
+  auto-create-roles: true
+  # Role name format (use {rank} for rank number)
+  role-format: "Rank #{rank}"
+  # Unranked role name
+  unranked-role: "Unranked"
+  # Unranked role ID (auto-set, don't edit unless needed)
+  unranked-role-id: ""
+  # Rank role IDs (auto-set, don't edit unless needed)
+  rank-role-ids: {}
+  # Remove old rank roles when rank changes
+  remove-old-roles: true
+  # Moderator role: given on join / account link to linked players with the
+  # rankedsmp.discord.mod permission (leave empty to disable)
+  mod-role-id: "" # Discord role ID for moderators (optional)
+  # Also take the mod role away from linked players without that permission
+  # (off by default so moderators assigned by hand in Discord keep it)
+  remove-mod-role-without-permission: false
+  # Role colors by rank tier (hex format)
+  colors:
+    rank-1: "#FFD700"      # Gold
+    rank-2-3: "#C0C0C0"    # Silver
+    rank-4-10: "#CD7F32"   # Bronze
+    rank-11-plus: "#808080" # Gray
+    unranked: "#696969"    # Dim Gray
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗███████╗
+# ██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔════╝
+# ██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗  ███████╗
+# ██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝  ╚════██║
+# ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗███████║
+#  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚══════╝
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Server Updates Channel
+updates:
+  # Enable server update announcements
+  enabled: false
+  # Channel ID for updates (set via /setchannel updates or manually)
+  channel-id: ""
+  # Announce when game starts
+  announce-game-start: true
+  # Announce when game ends
+  announce-game-end: true
+  # Announce rank changes (gained, lost, transferred, removed)
+  announce-rank-changes: false
+  # Announce player join events
+  announce-player-join: false
+  # Announce player leave events
+  announce-player-leave: false
+  # Announce player death events
+  announce-player-death: false
+  # Mention role for important updates
+  mention-role-id: ""
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+#  █████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗
+# ██╔══██╗██╔══██╗████╗ ████║██║████╗  ██║
+# ███████║██║  ██║██╔████╔██║██║██╔██╗ ██║
+# ██╔══██║██║  ██║██║╚██╔╝██║██║██║╚██╗██║
+# ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║
+# ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Discord Commands (slash commands)
+commands:
+  # Enable /help command in Discord
+  help: true
+  # Enable /rank command in Discord
+  rank: true
+  # Enable /rankset command in Discord (admin only)
+  rankset: true
+  # Enable /rankrandom command in Discord (admin only)
+  rankrandom: true
+  # Enable /setchannel command in Discord (admin only)
+  setchannel: true
+  # Enable /rankexport command in Discord (admin only)
+  rankexport: true
+  # Enable /rankimport command in Discord (admin only)
+  rankimport: true
+  # Enable /link command in Discord
+  link: true
+  # Enable /unlink command in Discord
+  unlink: true
+
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗ 
+# ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝ 
+# ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
+# ██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║
+# ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
+# ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝ 
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+# Admin Settings
+admin:
+  # Discord role ID for admin commands (leave empty to use server permissions)
+  admin-role-id: ""
+  # Discord user IDs with admin access (comma-separated)
+  admin-user-ids: []
+
+# Debug Settings
+debug:
+  # Enable debug logging
+  enabled: false
+  # Log all Discord events
+  log-events: false

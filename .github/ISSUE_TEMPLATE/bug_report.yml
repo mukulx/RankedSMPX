@@ -1,0 +1,95 @@
+name: Bug report
+description: Something in RankedSMPX is broken or behaves wrong
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [open issues](https://github.com/mukulx/RankedSMP/issues) first. For help with setup, use the Discord: https://discord.gg/QGsJYht2vy
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: RankedSMPX version
+      description: Run `/version RankedSMPX` or check the jar name.
+      placeholder: "3.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: server-version
+    attributes:
+      label: Server software and version
+      description: Run `/version`. Only Paper and its forks are supported.
+      placeholder: "Paper 1.21.11 build 100"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: What is affected?
+      multiple: true
+      options:
+        - Ranks and season (start, stop, set, random, steal)
+        - Hearts, XP, potions or extra inventory
+        - Hierarchy Hammer
+        - Diamond Spear or Dragon Egg locator
+        - Discord bot
+        - Config or migration
+        - Dialogs and GUIs
+        - TAB, LuckPerms or PlaceholderAPI
+        - Database (SQLite or MySQL)
+        - API
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What you expected and what you got instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run /rsmp start
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and errors
+      description: Paste the error from `logs/latest.log`, or a link to it on mclo.gs or a paste site.
+      render: text
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant config
+      description: The part of `config.yml`, `items.yml`, `ranks.yml` or `discord.yml` involved. Remove tokens and passwords.
+      render: yaml
+
+  - type: textarea
+    id: plugins
+    attributes:
+      label: Other plugins
+      description: Output of `/plugins`, if another plugin may be involved.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I am on the latest release of RankedSMPX
+          required: true
+        - label: I searched the existing issues
+          required: true

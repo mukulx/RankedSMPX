@@ -1,0 +1,691 @@
+# ██████╗  █████╗ ███╗   ██╗██╗  ██╗███████╗██████╗ ███████╗███╗   ███╗██████╗ ██╗  ██╗
+# ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝██╔════╝██╔══██╗██╔════╝████╗ ████║██╔══██╗╚██╗██╔╝
+# ██████╔╝███████║██╔██╗ ██║█████╔╝ █████╗  ██║  ██║███████╗██╔████╔██║██████╔╝ ╚███╔╝
+# ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ ██╔══╝  ██║  ██║╚════██║██║╚██╔╝██║██╔═══╝  ██╔██╗
+# ██║  ██║██║  ██║██║ ╚████║██║  ██╗███████╗██████╔╝███████║██║ ╚═╝ ██║██║     ██╔╝ ██╗
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝
+#
+# Author: mukulx
+# Modrinth: https://modrinth.com/project/rankedsmpx
+# Discord: https://discord.gg/QGsJYht2vy
+# Issues: https://github.com/mukulx/RankedSMPX
+
+config-version: 16
+
+# ███╗   ███╗███████╗███████╗███████╗ █████╗  ██████╗ ███████╗███████╗
+# ████╗ ████║██╔════╝██╔════╝██╔════╝██╔══██╗██╔════╝ ██╔════╝██╔════╝
+# ██╔████╔██║█████╗  ███████╗███████╗███████║██║  ███╗█████╗  ███████╗
+# ██║╚██╔╝██║██╔══╝  ╚════██║╚════██║██╔══██║██║   ██║██╔══╝  ╚════██║
+# ██║ ╚═╝ ██║███████╗███████║███████║██║  ██║╚██████╔╝███████╗███████║
+# ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝
+
+# Small Caps Messages - Convert all messages to small caps font (ʜᴇʟʟᴏ)
+# Colors and formatting are preserved
+small-caps-messages: true
+
+# ██████╗  █████╗ ████████╗ █████╗ ██████╗  █████╗ ███████╗███████╗
+# ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝
+# ██║  ██║███████║   ██║   ███████║██████╔╝███████║███████╗█████╗
+# ██║  ██║██╔══██║   ██║   ██╔══██║██╔══██╗██╔══██║╚════██║██╔══╝
+# ██████╔╝██║  ██║   ██║   ██║  ██║██████╔╝██║  ██║███████║███████╗
+# ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
+
+# Database Settings (for persistent storage)
+database:
+  # Type: sqlite or mysql
+  type: sqlite
+  # SQLite file name
+  sqlite-file: rankedsmp.db
+  # MySQL settings (if type is mysql)
+  mysql:
+    host: localhost
+    port: 3306
+    database: rankedsmp
+    username: root
+    password: password
+    # HikariCP pool settings
+    pool:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# ██████╗  █████╗ ███╗   ███╗███████╗
+# ██╔════╝ ██╔══██╗████╗ ████║██╔════╝
+# ██║  ███╗███████║██╔████╔██║█████╗
+# ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝
+# ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗
+#  ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
+
+# Season Settings
+season:
+  # Total number of ranks (1-20)
+  total-ranks: 20
+
+  # Rank stealing on player kill
+  rank-stealing:
+    enabled: true
+    # Only allow stealing if rank difference is within this range (0 = unlimited)
+    max-rank-difference: 0
+    # Seconds a killer must wait after stealing a rank before they can steal again (0 = no cooldown)
+    cooldown: 0
+
+  # Visual effects on death
+  death-effects:
+    # Lightning strike at victim's location when killed in PvP
+    lightning-on-kill: false
+
+# Auto-Assign Remaining Ranks
+# When the season starts, ranks are assigned only to players who are online.
+# If there are leftover ranks (e.g. 20 ranks but only 15 players online),
+# new players who join will automatically receive the remaining ranks
+# with the same reveal animation and chat announcement.
+auto-assign-ranks:
+  enabled: true
+
+# ██████╗  █████╗ ███╗   ██╗██╗  ██╗    ██████╗ ██╗███████╗██████╗ ██╗      █████╗ ██╗   ██╗
+# ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝    ██╔══██╗██║██╔════╝██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝
+# ██████╔╝███████║██╔██╗ ██║█████╔╝     ██║  ██║██║███████╗██████╔╝██║     ███████║ ╚████╔╝
+# ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗     ██║  ██║██║╚════██║██╔═══╝ ██║     ██╔══██║  ╚██╔╝
+# ██║  ██║██║  ██║██║ ╚████║██║  ██╗    ██████╔╝██║███████║██║     ███████╗██║  ██║   ██║
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝    ╚═════╝ ╚═╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝
+
+# Rank Display in Messages
+rank-display:
+  # Show rank prefixes before player names in normal chat
+  show-in-chat: false
+  # Show rank in join messages
+  show-on-join: true
+  # Show rank in leave messages
+  show-on-leave: true
+  # Show rank in death messages
+  show-on-death: true
+  # Rank format (use {rank} for rank number, {player} for player name)
+  # Examples: "#{rank} {player}", "{player} Rank {rank}", "R{rank} {player}"
+  format: "&b#{rank} &r{player}"
+  # Format for unranked players
+  unranked-format: "&7Unranked &r{player}"
+
+# ██╗  ██╗███████╗ █████╗ ██╗  ████████╗██╗  ██╗
+# ██║  ██║██╔════╝██╔══██╗██║  ╚══██╔══╝██║  ██║
+# ███████║█████╗  ███████║██║     ██║   ███████║
+# ██╔══██║██╔══╝  ██╔══██║██║     ██║   ██╔══██║
+# ██║  ██║███████╗██║  ██║███████╗██║   ██║  ██║
+# ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
+
+# Health System
+health:
+  # How to apply max health:
+  # MODIFIER - Use AttributeModifier (recommended, most compatible with other plugins)
+  #            Adds bonus hearts on top of base health. Other plugins can coexist.
+  #
+  # DIRECT - Use setBaseValue (simpler, may conflict with plugins that also modify health)
+  #          Directly sets max health. Works if no other plugins touch health.
+  #
+  # AGGRESSIVE - Nuclear option. Removes ALL other health modifiers and forces our value.
+  #              Periodically re-checks and fixes health if another plugin changes it.
+  #              ⚠ WARNING: Only use this when nothing else works!
+  #              This mode fights other plugins for control of health values.
+  #
+  #              To find conflicting plugins:
+  #              1. Use PlugMan to unload plugins one by one
+  #              2. Test after each unload to find the culprit
+  #              3. Common culprits: AltarSMP, poorly coded RPG plugins
+  #              4. If you find the plugin, report the conflict to their devs
+  #              5. If their code is too bad to fix, use AGGRESSIVE mode as last resort
+  mode: MODIFIER
+
+  # Aggressive mode settings (only used when mode is AGGRESSIVE)
+  aggressive:
+    # How often to force re-check health (in seconds)
+    # Lower = more CPU usage but catches changes faster
+    recheck-interval: 5
+    # Remove other plugins' health modifiers on apply
+    # When true: Removes ALL AttributeModifiers except ours
+    # When false: Only removes ours and adds it back (less aggressive)
+    remove-other-modifiers: true
+
+  # Rank 1 hearts
+  max-hearts: 20.0
+  # Rank 20 hearts
+  min-hearts: 10.5
+  # Unranked hearts
+  unranked-hearts: 10.0
+  # Apply health on respawn
+  apply-on-respawn: true
+  # Custom hearts per rank (overrides linear interpolation if set)
+  custom-hearts:
+    1: 20.0
+    2: 19.5
+    3: 19.0
+    4: 18.5
+    5: 18.0
+    6: 17.5
+    7: 17.0
+    8: 16.5
+    9: 16.0
+    10: 15.5
+    11: 15.0
+    12: 14.5
+    13: 14.0
+    14: 13.5
+    15: 13.0
+    16: 12.5
+    17: 12.0
+    18: 11.5
+    19: 11.0
+    20: 10.5
+    0: 10.0
+
+# ██████╗  ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+# ██╔══██╗██╔═══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+# ██████╔╝██║   ██║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+# ██╔═══╝ ██║   ██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+# ██║     ╚██████╔╝   ██║   ██║╚██████╔╝██║ ╚████║███████║
+# ╚═╝      ╚═════╝    ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+
+# Potion Duration Multipliers
+# How it works:
+# - When a player drinks/gets hit by a potion, the duration is multiplied by their rank's multiplier
+# - Example: Rank 1 with 2.0x drinks a 3-minute potion = 6 minutes
+# - Custom multipliers override the linear interpolation between rank-1 and rank-20
+# - To use custom multipliers: Set the value for each rank below
+# - To use linear interpolation: Remove or comment out the custom-multipliers section
+potions:
+  # Rank 1 multiplier (2.0 = 200% duration)
+  rank-1-multiplier: 2.0
+  # Rank 20 multiplier (1.05 = 105% duration)
+  rank-20-multiplier: 1.05
+  # Unranked multiplier
+  unranked-multiplier: 1.0
+  # Extend custom effects from plugins/items (e.g., custom armor, enchanted items)
+  # When enabled, potion effects from plugins will also be extended by the multiplier
+  # When disabled, only vanilla potion sources (potions, arrows, beacons, etc.) are extended
+  extend-custom-effects: true
+
+  # Ignored Effects - Effects that should NOT be modified by the multiplier
+  # Add negative/harmful effects here so they don't last longer
+  # Effect names must match Minecraft's internal names
+  ignored-effects:
+    - DARKNESS
+    - POISON
+    - WITHER
+    - HUNGER
+    - WEAKNESS
+    - SLOWNESS
+    - MINING_FATIGUE
+    - NAUSEA
+    - BLINDNESS
+    - INSTANT_DAMAGE
+    - UNLUCK
+    - BAD_OMEN
+    - RAID_OMEN
+    - LEVITATION
+
+  # Custom multipliers per rank (overrides linear interpolation if set)
+  # To change: Edit the values below, then run /rsmp reload
+  custom-multipliers:
+    1: 2.0
+    2: 1.96
+    3: 1.91
+    4: 1.86
+    5: 1.81
+    6: 1.76
+    7: 1.71
+    8: 1.66
+    9: 1.61
+    10: 1.56
+    11: 1.51
+    12: 1.46
+    13: 1.41
+    14: 1.36
+    15: 1.31
+    16: 1.26
+    17: 1.21
+    18: 1.16
+    19: 1.11
+    20: 1.05
+    0: 1.0
+
+# ██╗  ██╗██████╗
+# ╚██╗██╔╝██╔══██╗
+#  ╚███╔╝ ██████╔╝
+#  ██╔██╗ ██╔═══╝
+# ██╔╝ ██╗██║
+# ╚═╝  ╚═╝╚═╝
+
+# XP Multipliers
+# How it works:
+# - When a player gains XP, the amount is multiplied by their rank's multiplier
+# - Example: Rank 1 with 3.0x kills a mob that drops 5 XP = 15 XP
+# - Custom multipliers override the linear interpolation between rank-1 and rank-20
+# - To use custom multipliers: Set the value for each rank below
+# - To use linear interpolation: Remove or comment out the custom-multipliers section
+xp:
+  # Rank 1 multiplier (3.0 = 300% XP)
+  rank-1-multiplier: 3.0
+  # Rank 20 multiplier (1.1 = 110% XP)
+  rank-20-multiplier: 1.1
+  # Unranked multiplier
+  unranked-multiplier: 1.0
+  # Custom multipliers per rank (overrides linear interpolation if set)
+  # To change: Edit the values below, then run /rsmp reload
+  # Smooth progression: 3.0 → 1.1 (decrease of 0.1 per rank)
+  custom-multipliers:
+    1: 3.0      # Rank 1
+    2: 2.9      # Rank 2
+    3: 2.8      # Rank 3
+    4: 2.7      # Rank 4
+    5: 2.6      # Rank 5
+    6: 2.5      # Rank 6
+    7: 2.4      # Rank 7
+    8: 2.3      # Rank 8
+    9: 2.2      # Rank 9
+    10: 2.1     # Rank 10
+    11: 2.0     # Rank 11
+    12: 1.9     # Rank 12
+    13: 1.8     # Rank 13
+    14: 1.7     # Rank 14
+    15: 1.6     # Rank 15
+    16: 1.5     # Rank 16
+    17: 1.4     # Rank 17
+    18: 1.3     # Rank 18
+    19: 1.2     # Rank 19
+    20: 1.1     # Rank 20
+    0: 1.0      # Unranked
+
+# ██╗███╗   ██╗██╗   ██╗███████╗███╗   ██╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+# ██║████╗  ██║██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+# ██║██╔██╗ ██║██║   ██║█████╗  ██╔██╗ ██║   ██║   ██║   ██║██████╔╝ ╚████╔╝
+# ██║██║╚██╗██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝
+# ██║██║ ╚████║ ╚████╔╝ ███████╗██║ ╚████║   ██║   ╚██████╔╝██║  ██║   ██║
+# ╚═╝╚═╝  ╚═══╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+
+# Extra Inventory Slots (/inv command)
+inventory:
+  # Enable extra inventory for top 10 ranks
+  enabled: true
+  # Anti-dupe protection (prevents rapid clicking, double-click exploits, creative mode exploits, and hopper theft)
+  anti-dupe: true
+  # Drop items on death
+  drop-on-death: true
+  # Combat tagging - prevent opening inventory during combat
+  combat:
+    # Disable opening extra inventory during combat
+    disabled-during-combat: false
+    # Combat tag duration in seconds (how long after taking/dealing damage)
+    combat-duration: 10
+  # Slots per rank (exact values - extra slots filled with barriers)
+  # Note: Maximum 54 slots (6 rows) due to Minecraft limitations
+  slots:
+    1: 54   # 53 slots
+    2: 54   # 54 slots
+    3: 50   # 50 slots
+    4: 45   # 45 slots
+    5: 40   # 40 slots
+    6: 35   # 35 slots
+    7: 30   # 30 slots
+    8: 25   # 25 slots
+    9: 20   # 20 slots
+    10: 15  # 15 slots
+
+# ██╗  ██╗██╗███████╗██████╗  █████╗ ██████╗  ██████╗██╗  ██╗██╗   ██╗
+# ██║  ██║██║██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║╚██╗ ██╔╝
+# ███████║██║█████╗  ██████╔╝███████║██████╔╝██║     ███████║ ╚████╔╝
+# ██╔══██║██║██╔══╝  ██╔══██╗██╔══██║██╔══██╗██║     ██╔══██║  ╚██╔╝
+# ██║  ██║██║███████╗██║  ██║██║  ██║██║  ██║╚██████╗██║  ██║   ██║
+# ╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝
+#
+# ██╗  ██╗ █████╗ ███╗   ███╗███╗   ███╗███████╗██████╗
+# ██║  ██║██╔══██╗████╗ ████║████╗ ████║██╔════╝██╔══██╗
+# ███████║███████║██╔████╔██║██╔████╔██║█████╗  ██████╔╝
+# ██╔══██║██╔══██║██║╚██╔╝██║██║╚██╔╝██║██╔══╝  ██╔══██╗
+# ██║  ██║██║  ██║██║ ╚═╝ ██║██║ ╚═╝ ██║███████╗██║  ██║
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝
+
+# Hierarchy Hammer
+# - Admins can manually give it with /rsmp give hammer <player>
+# NOTE: The Hierarchy Hammer is still a bit buggy but functional. Will be improved in future versions.
+hierarchy-hammer:
+  enabled: true
+  # Auto-give hammer at game start (disabled by default)
+  # If false, admins must manually give it with /rsmp give hammer <player>
+  auto-give-on-start: false
+  # Only allow hitting players
+  # When true: Hammer can hit mobs but only player hits count toward combo
+  # When false: Both player and mob hits count toward combo
+  players-only: true
+  # Item name
+  name: "§x§f§2§b§c§4§5§lʜ§x§f§2§b§f§4§b§lɪ§x§f§2§c§1§5§1§lᴇ§x§f§2§c§4§5§6§lʀ§x§f§2§c§6§5§c§lᴀ§x§f§2§c§9§6§2§lʀ§x§f§2§c§c§6§8§lᴄ§x§f§2§c§e§6§e§lʜ§x§f§2§d§1§7§3§lʏ §x§f§2§d§6§7§f§lʜ§x§f§2§d§9§8§5§lᴀ§x§f§2§d§b§8§b§lᴍ§x§f§2§d§e§9§0§lᴍ§x§f§2§e§0§9§6§lᴇ§x§f§2§e§3§9§c§lʀ"
+  # Lore
+  lore:
+    - "&7A powerful hammer that manifested"
+    - "&7as a result of improper judgement"
+    - ""
+    - "&6SENTENCING &fRMB"
+    - "&7Launch forward, allowing you to initiate"
+    - "&7hits with the weapon. This dash will stop"
+    - "&7cooldown when a successful hit is initiated."
+    - "&7Missing an attack will put it on cooldown."
+    - ""
+    - "&6VERDICT"
+    - "&7After hitting 3 consecutive hits without"
+    - "&7missing, your next hit is empowered."
+  # Custom Model Data / Model ID for custom textures (0 = default vanilla texture)
+  # Supports both integer custom-model-data (e.g. 1001) and 1.21.4+ item-model (e.g. "minecraft:custom_hammer")
+  custom-model-data: 0
+  model-id: 0
+  item-model: ""
+  # Dash distance in blocks
+  dash-distance: 5.0
+  # Dash cooldown in seconds (0 = no cooldown, only limited by landing requirement)
+  dash-cooldown: 0
+  # Item cooldown after dash in seconds (disables the mace like chorus fruit/ender pearl)
+  # This prevents using the mace immediately after dashing
+  dash-item-cooldown: 10
+  # Dash air time (how long player stays airborne, in ticks - 20 ticks = 1 second)
+  dash-air-time: 15
+  # Dash slow fall strength (0-5, higher = slower fall for better aiming)
+  dash-slow-fall-strength: 3
+  # Dash speed multiplier (how fast the player dashes forward)
+  dash-speed: 1.0
+  # Require landing before next dash (true = must land to dash again, false = unlimited air dashes)
+  require-landing: true
+  # Smash hits that build the combo; the next smash hit triggers the Verdict
+  combo-required: 3
+  # Verdict damage multiplier (applied to verdict-damage; 1.0 = no change)
+  combo-damage-multiplier: 1.0
+  # Verdict explosion power that breaks terrain at the impact point (0 = off, 4.0 = TNT)
+  combo-explosion-power: 0.0
+  # Combo resets if no smash hit lands within this many seconds (0 = never)
+  combo-reset-time: 5
+  # Miss cooldown in seconds
+  miss-cooldown: 10
+  # Verdict cooldown in seconds (after 4th hit ultimate)
+  verdict-cooldown: 30
+  # Verdict base damage (40.0 = 20 hearts)
+  verdict-damage: 40.0
+
+  # Mace smash bonus damage (when falling with hammer)
+  mace-smash:
+    # Enable mace smash bonus damage
+    enabled: true
+    # Multiplies hammer hit damage after a fall (1.0 = vanilla mace damage, 2.0 = double)
+    damage-multiplier: 1.0
+    # Minimum fall distance for the bonus and for a hit to count as a combo smash (blocks)
+    min-fall-distance: 1.5
+
+  # Particle effects (dash trail, spiral, etc.)
+  particles:
+    enabled: true
+
+  # Prevent storing Hierarchy Hammer in containers (enabled by default)
+  # Blocks: chests, ender chests, barrels, shulker boxes, hoppers, extra inventory, etc.
+  prevent-storage: true
+  # Prevent dropping Hierarchy Hammer
+  # When enabled, hammer cannot be dropped with Q key
+  prevent-drop: false
+
+# ██████╗ ██████╗  █████╗  ██████╗  ██████╗ ███╗   ██╗    ███████╗ ██████╗  ██████╗
+# ██╔══██╗██╔══██╗██╔══██╗██╔════╝ ██╔═══██╗████╗  ██║    ██╔════╝██╔════╝ ██╔════╝
+# ██║  ██║██████╔╝███████║██║  ███╗██║   ██║██╔██╗ ██║    █████╗  ██║  ███╗██║  ███╗
+# ██║  ██║██╔══██╗██╔══██║██║   ██║██║   ██║██║╚██╗██║    ██╔══╝  ██║   ██║██║   ██║
+# ██████╔╝██║  ██║██║  ██║╚██████╔╝╚██████╔╝██║ ╚████║    ███████╗╚██████╔╝╚██████╔╝
+# ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝    ╚══════╝ ╚═════╝  ╚═════╝
+
+# Dragon Egg Locator (Waypoint API / Locator Bar - 1.21.6+)
+# Uses Minecraft's native Waypoint Attributes to render the client-side Locator Bar
+# for any player carrying the Dragon Egg.
+dragon-egg-locator:
+  # Enable Dragon Egg Locator features
+  enabled: true
+  # Prevent storing Dragon Egg in containers
+  # Blocks: chests, ender chests, barrels, shulker boxes, hoppers, extra inventory, etc.
+  prevent-storage: true
+  # Prevent dropping Dragon Egg (disabled by default)
+  # When enabled, Dragon Egg cannot be dropped with Q key
+  prevent-drop: false
+
+#  ███████╗██████╗ ███████╗ █████╗ ██████╗
+#  ██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗
+#  ███████╗██████╔╝█████╗  ███████║██████╔╝
+#  ╚════██║██╔═══╝ ██╔══╝  ██╔══██║██╔══██╗
+#  ███████║██║     ███████╗██║  ██║██║  ██║
+#  ╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+
+# Diamond Spear (1.21.11+ only)
+# Only works on servers running Minecraft 1.21.11 or higher
+# The spear is always diamond material - no other types available
+spear:
+  # Enable spear features (auto-disabled if server version doesn't support spears)
+  enabled: true
+  # Make spear unbreakable (infinite durability)
+  unbreakable: true
+  # Prevent storing Diamond Spear in containers
+  # Blocks: chests, ender chests, barrels, shulker boxes, hoppers, extra inventory, etc.
+  prevent-storage: true
+  # Prevent dropping Diamond Spear (disabled by default)
+  # When enabled, spear cannot be dropped with Q key
+  prevent-drop: true
+  # Enchantments to apply to the spear
+  # Format: ENCHANTMENT_NAME: level
+  # Available enchantments: LUNGE, SHARPNESS, KNOCKBACK, UNBREAKING, MENDING, etc.
+  # Note: LUNGE is spear-specific and provides dash ability
+  # Examples:
+  #   LUNGE: 3          - Dash ability (spear-specific)
+  #   SHARPNESS: 5      - Extra damage
+  #   KNOCKBACK: 2      - Knock enemies back
+  #   UNBREAKING: 3     - Durability (if unbreakable is false)
+  #   MENDING: 1        - Repair with XP (if unbreakable is false)
+  enchantments:
+    LUNGE: 3
+    # SHARPNESS: 5
+    # KNOCKBACK: 2
+
+# ████████╗ █████╗ ██████╗
+# ╚══██╔══╝██╔══██╗██╔══██╗
+#    ██║   ███████║██████╔╝
+#    ██║   ██╔══██║██╔══██╗
+#    ██║   ██║  ██║██████╔╝
+#    ╚═╝   ╚═╝  ╚═╝╚═════╝
+
+# TAB Integration (Works with TAB plugin OR vanilla Minecraft tab)
+# - If TAB plugin is installed: Uses TAB's advanced features (RGB colors, gradients, etc.)
+# - If TAB plugin is NOT installed: Uses vanilla Minecraft scoreboard teams (legacy colors only)
+# No setup command needed - works automatically!
+#
+# Supports MiniMessage RGB format with TAB plugin: <gradient:#FF0000:#00FF00>Text</gradient>, <#FF5555>Text
+# Vanilla tab only supports legacy color codes: &a, &b, &l, &o, etc.
+# You can use PlaceholderAPI placeholders in prefix/suffix!
+# Example: "&7[&bVIP&7] &b[&3#%rank%&b] &c%rankedsmp_hearts%❤ "
+#
+tab-integration:
+  enabled: true
+
+  # Unranked player prefix (no rank assigned)
+  # Format: &e[&7UNRANKED&e] = yellow brackets with a gray label
+  unranked-prefix: '&e[&7UNRANKED&e] &r'
+  unranked-suffix: ''
+
+  # Blacklisted player prefix (cannot receive ranks)
+  blacklisted-prefix: '&0[&8BLACKLISTED&0] &r'
+  blacklisted-suffix: ''
+
+  # Rank Prefixes - Customize each rank's prefix individually
+  # With TAB plugin: Supports legacy color codes (&a, &b) and MiniMessage format (<#FF5555>, <gradient>)
+  # Without TAB plugin: Only supports legacy color codes (&a, &b, &l, &o, etc.)
+  #
+  # DEFAULT: Original style (legacy colors)
+  # - Ranked players: &e[#X] (Yellow)
+  # - Unranked: &e[&7UNRANKED&e] (Yellow brackets, gray label)
+  #
+  # To change to modern gradients: Use /rsmp modern (requires TAB plugin)
+  # To revert to original: Use /rsmp original
+  #
+  # Modern gradient examples (requires TAB plugin):
+  #   Ranks 1-5: &#FFD700[&#FFAA00#1&#FFD700] (Gold to Orange)
+  #   Ranks 6-10: &#C0C0C0[&#A4D7E8#6&#C0C0C0] (Silver to Light Blue)
+  #   Ranks 11-15: &#32CD32[&#5FE47E#11&#32CD32] (Green to Lime)
+  #   Ranks 16-20: &#8A2BE2[&#C21FB7#16&#8A2BE2] (Purple to Pink)
+  rank-prefixes:
+    1: '&e[#1] &r'
+    2: '&e[#2] &r'
+    3: '&e[#3] &r'
+    4: '&e[#4] &r'
+    5: '&e[#5] &r'
+    6: '&e[#6] &r'
+    7: '&e[#7] &r'
+    8: '&e[#8] &r'
+    9: '&e[#9] &r'
+    10: '&e[#10] &r'
+    11: '&e[#11] &r'
+    12: '&e[#12] &r'
+    13: '&e[#13] &r'
+    14: '&e[#14] &r'
+    15: '&e[#15] &r'
+    16: '&e[#16] &r'
+    17: '&e[#17] &r'
+    18: '&e[#18] &r'
+    19: '&e[#19] &r'
+    20: '&e[#20] &r'
+
+  # Suffix shown for ranked players unless overridden below (optional)
+  default-suffix: ''
+
+  # Rank-specific suffix overrides (optional). Add only ranks that need a different suffix.
+  # Example: 1: ' &6✦'
+  rank-suffixes:
+
+# ██╗     ██╗   ██╗ ██████╗██╗  ██╗██████╗ ███████╗██████╗ ███╗   ███╗███████╗
+# ██║     ██║   ██║██╔════╝██║ ██╔╝██╔══██╗██╔════╝██╔══██╗████╗ ████║██╔════╝
+# ██║     ██║   ██║██║     █████╔╝ ██████╔╝█████╗  ██████╔╝██╔████╔██║███████╗
+# ██║     ██║   ██║██║     ██╔═██╗ ██╔═══╝ ██╔══╝  ██╔══██╗██║╚██╔╝██║╚════██║
+# ███████╗╚██████╔╝╚██████╗██║  ██╗██║     ███████╗██║  ██║██║ ╚═╝ ██║███████║
+# ╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
+
+# LuckPerms Integration
+# Optional integration to provide dynamic rank contexts in LuckPerms:
+# - rankedsmp:rank (1-20, unranked, blacklisted)
+# - rankedsmp:ranked (true, false)
+# Allows server owners to assign permissions, meta prefixes, or groups based on rank in LuckPerms!
+luckperms:
+  # Enable LuckPerms integration (disabled by default)
+  enabled: false
+  # Register dynamic rank contexts with LuckPerms ContextManager
+  register-contexts: true
+  # Automatically signal LuckPerms to recalculate player permissions/meta on rank changes
+  sync-on-rank-change: true
+
+# ███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗ ███████╗
+# ██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗██╔════╝
+# ███████╗██║   ██║██║   ██║██╔██╗ ██║██║  ██║███████╗
+# ╚════██║██║   ██║██║   ██║██║╚██╗██║██║  ██║╚════██║
+# ███████║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝███████║
+# ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝
+
+# Sound Effects
+# Get full list of sounds: https://www.digminecraft.com/lists/sound_list_pc.php
+sounds:
+  # Sound when season starts (all players hear)
+  season-start:
+    enabled: true
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 1.0
+    pitch: 1.0
+
+  # Sound when player receives their rank
+  rank-reveal:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 1.2
+
+  # Sound for rank assignments broadcast
+  rank-broadcast:
+    enabled: true
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 0.5
+    pitch: 1.5
+
+  # Sound when season stops
+  season-stop:
+    enabled: true
+    sound: ENTITY_WITHER_DEATH
+    volume: 0.8
+    pitch: 1.0
+
+# ██████╗  █████╗ ███╗   ██╗██╗  ██╗    ████████╗██████╗  █████╗ ███╗   ██╗███████╗███████╗███████╗██████╗
+# ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝    ╚══██╔══╝██╔══██╗██╔══██╗████╗  ██║██╔════╝██╔════╝██╔════╝██╔══██╗
+# ██████╔╝███████║██╔██╗ ██║█████╔╝        ██║   ██████╔╝███████║██╔██╗ ██║███████╗█████╗  █████╗  ██████╔╝
+# ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗        ██║   ██╔══██╗██╔══██║██║╚██╗██║╚════██║██╔══╝  ██╔══╝  ██╔══██╗
+# ██║  ██║██║  ██║██║ ╚████║██║  ██╗       ██║   ██║  ██║██║  ██║██║ ╚████║███████║██║     ███████╗██║  ██║
+# ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝       ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝
+
+# Rank Transfer Settings
+# Note: For Discord integration settings, see discord.yml
+rank-transfer:
+  # Enable rank transfer feature
+  enabled: false
+  # Allow transferring to offline players
+  allow-offline: false
+
+# Tactical Orbital Strike System (/orbitalstrike, /strike, /os)
+# Permission-based admin tactical strike artillery.
+orbital-strike:
+  # Enable orbital strike commands and dialogs
+  enabled: true
+  # Permission required to use orbital strike commands
+  permission: "rankedsmp.orbitalstrike"
+  # Height above target coordinate where TNT entities spawn in the sky
+  spawn-height-offset: 45
+
+  # Nuke Shot Settings (Expanding concentric TNT circles falling from the sky)
+  nuke-shot:
+    # Number of concentric expanding rings
+    rings: 7
+    # Distance between each ring
+    ring-radius-step: 3.5
+    # Fuse ticks before detonation (75 ticks = ~3.7 seconds)
+    fuse-ticks: 75
+    # Explosion power yield
+    tnt-yield: 4.0
+    # Whether explosions break terrain blocks
+    break-blocks: true
+    # Whether explosions ignite fire
+    set-fire: false
+
+  # Stab Shot Settings (Concentrated vertical drilling precision barrage)
+  stab-shot:
+    # Number of TNT dropped in vertical sequence
+    tnt-count: 25
+    # Fuse ticks before detonation
+    fuse-ticks: 65
+    # Explosion power yield
+    tnt-yield: 4.0
+    # Whether explosions break terrain blocks
+    break-blocks: true
+    # Whether explosions ignite fire
+    set-fire: false
+
+# ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗
+# ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝
+# ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
+# ██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║
+# ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
+# ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝
+
+# Debug Mode - Enable detailed console logging for troubleshooting (true/false)
+debug: false
+
+# ███████╗██╗  ██╗████████╗██████╗  █████╗
+# ██╔════╝╚██╗██╔╝╚══██╔══╝██╔══██╗██╔══██╗
+# █████╗   ╚███╔╝    ██║   ██████╔╝███████║
+# ██╔══╝   ██╔██╗    ██║   ██╔══██╗██╔══██║
+# ███████╗██╔╝ ██╗   ██║   ██║  ██║██║  ██║
+# ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝
+
+# Extra Settings - Additional options
+extra:
+  # Show extra pointless messages on startup
+  extra-pointless-messages: true
