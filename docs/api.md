@@ -7,13 +7,19 @@ something is added. Anything outside those packages is internal.
 
 ## Add it to your plugin
 
-Put the RankedSMPX jar on your compile classpath only. Do not shade it.
+Use the release from [JitPack](https://jitpack.io/#mukulx/RankedSMPX) as a compile-only dependency. Do not shade it.
 
 ```kotlin
+repositories {
+    maven("https://jitpack.io")
+}
+
 dependencies {
-    compileOnly(files("libs/RankedSMPX-3.0.0.jar"))
+    compileOnly("com.github.mukulx:RankedSMPX:3.0.0")
 }
 ```
+
+You can also put the plugin jar on your compile classpath by hand. Use a release tag for the version, or `main-SNAPSHOT` for the latest code.
 
 In `paper-plugin.yml` (or `plugin.yml`):
 

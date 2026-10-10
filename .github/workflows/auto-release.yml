@@ -86,7 +86,7 @@ jobs:
       with:
         tag_name: v${{ needs.check-version.outputs.version }}
         name: RankedSMPX ${{ needs.check-version.outputs.version }}
-        files: build/libs/RankedSMPX-*.jar
+        files: build/libs/RankedSMPX-${{ needs.check-version.outputs.version }}.jar
         body_path: release_notes.md
         draft: false
         prerelease: false

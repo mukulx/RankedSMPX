@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'dev.mukulx'
@@ -91,5 +92,19 @@ processResources {
     filteringCharset = 'UTF-8'
     filesMatching('paper-plugin.yml') {
         expand(version: project.version)
+    }
+}
+
+java {
+    withSourcesJar()
+}
+
+// Published through JitPack so other plugins can depend on the API.
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'RankedSMPX'
+            from components.java
+        }
     }
 }
