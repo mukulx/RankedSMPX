@@ -51,7 +51,7 @@ public class PlayerJoinListener implements Listener {
 
       net.kyori.adventure.text.minimessage.MiniMessage mm =
           net.kyori.adventure.text.minimessage.MiniMessage.miniMessage();
-      event.joinMessage(mm.deserialize(prefix + "<aqua>" + player.getName() + " joined the game</yellow>"));
+      event.joinMessage(mm.deserialize(prefix + "<yellow>" + player.getName() + " joined the game</yellow>"));
     }
 
     if (inventoryManager.isBeingViewedByAdmin(player.getUniqueId())) {

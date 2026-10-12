@@ -30,7 +30,7 @@ public class PlayerQuitListener implements Listener {
 
       net.kyori.adventure.text.minimessage.MiniMessage mm =
           net.kyori.adventure.text.minimessage.MiniMessage.miniMessage();
-      event.quitMessage(mm.deserialize(prefix + "<aqua>" + player.getName() + " left the game</yellow>"));
+      event.quitMessage(mm.deserialize(prefix + "<yellow>" + player.getName() + " left the game</yellow>"));
     }
 
     if (player.getOpenInventory() != null) {
