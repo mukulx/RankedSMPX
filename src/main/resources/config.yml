@@ -183,6 +183,12 @@ luckperms:
   # Refresh LuckPerms data when a rank changes.
   sync-on-rank-change: true
 
+# The vanilla player locator bar (1.21.6+).
+locator-bar:
+  # Hide other players from everyone's locator bar. The Dragon Egg carrier still
+  # shows up when dragon-egg-locator is enabled in items.yml.
+  hide-players: true
+
 # Bedrock players through GeyserMC + Floodgate. Commands always accept a
 # Bedrock player's full name (with the Floodgate prefix, e.g. .Steve) or UUID.
 bedrock:

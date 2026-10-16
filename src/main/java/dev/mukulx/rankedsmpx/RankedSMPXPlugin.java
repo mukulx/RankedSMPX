@@ -151,6 +151,9 @@ public class RankedSMPXPlugin extends JavaPlugin {
       try {
         dev.mukulx.rankedsmpx.locator.LocatorBarAPI.setLoggingEnabled(isDebug());
         dev.mukulx.rankedsmpx.locator.LocatorBarAPI.init(this);
+        if (configManager.getConfig().getBoolean("locator-bar.hide-players", true)) {
+          dev.mukulx.rankedsmpx.locator.LocatorBarAPI.hideAll();
+        }
       } catch (Throwable t) {
         getLogger().warning("Failed to initialize LocatorBarAPI: " + t.getMessage());
       }
