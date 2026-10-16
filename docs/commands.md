@@ -67,4 +67,8 @@ Use `/rsmp` or `/rankedsmp` for the main command. The main command also supports
 
 Use `/rsmp discord status` to check the connection and `/rsmp discord update` to refresh the leaderboard. Configure the bot in `discord.yml` and restart the server after changing `enabled`. The Discord bot also provides `/forcelink` and `/forceunlink` for account administration.
 
+## Choosing a player
+
+Admin commands that take a `<player>` accept an offline player's name or their UUID, for example `/rsmp rank remove 00000000-0000-0000-0009-01fd79799f17`. Bedrock players who join through Geyser and Floodgate are typed with their full name, including the Floodgate prefix: `/rsmp rank remove .SubPepper`. If the prefix is left out, the command suggests the full name but does not act on it. If several players have used the same name, the command lists their UUIDs to pick from.
+
 Most administrative commands require `rankedsmp.admin`; commands with narrower permissions are listed in [Permissions](permissions.md). Rank stealing and rank transfers are controlled separately in configuration.

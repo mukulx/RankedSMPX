@@ -3,11 +3,11 @@ package dev.mukulx.rankedsmpx.commands;
 import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
 import dev.mukulx.rankedsmpx.database.DatabaseManager;
 import dev.mukulx.rankedsmpx.managers.MessageManager;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -73,17 +73,23 @@ public class RankHistoryCommand implements CommandExecutor, TabCompleter {
         return true;
       }
     } else {
-      OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-      if (!target.hasPlayedBefore() && !target.isOnline()) {
-        sender.sendMessage(
-            messageManager.getPrefix()
-                + "§cPlayer §b"
-                + targetName
-                + " §chas never played on this server!");
+      PlayerResolver.Target target =
+          plugin
+              .getPlayerResolver()
+              .resolve(
+                  sender,
+                  targetName,
+                  () ->
+                      sender.sendMessage(
+                          messageManager.getPrefix()
+                              + "§cPlayer §b"
+                              + targetName
+                              + " §chas never played on this server!"));
+      if (target == null) {
         return true;
       }
-      targetUUID = target.getUniqueId();
-      displayName = target.getName();
+      targetUUID = target.uuid();
+      displayName = target.name();
     }
 
     List<DatabaseManager.RankHistoryEntry> history = databaseManager.getRankHistory(targetUUID, 20);

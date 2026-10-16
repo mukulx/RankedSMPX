@@ -23,7 +23,7 @@ The shipped rank table has 20 ranked slots. Add rows to create more; the highest
 |---|---|
 | Server | Paper 1.21.1+ and Folia; Java 21+ |
 | Current source version | 3.0.0 |
-| Optional plugins | PlaceholderAPI, TAB, LuckPerms |
+| Optional plugins | PlaceholderAPI, TAB, LuckPerms, Geyser + Floodgate |
 | Storage | SQLite by default; MySQL optional |
 | Built-in integration | Optional Discord bot |
 

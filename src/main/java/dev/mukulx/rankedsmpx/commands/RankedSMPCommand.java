@@ -5,6 +5,7 @@ import dev.mukulx.rankedsmpx.managers.ConfigManager;
 import dev.mukulx.rankedsmpx.managers.GameManager;
 import dev.mukulx.rankedsmpx.managers.MessageManager;
 import dev.mukulx.rankedsmpx.managers.RankManager;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import java.util.*;
 import org.bukkit.Bukkit;
@@ -392,7 +393,10 @@ public class RankedSMPCommand implements CommandExecutor, TabCompleter {
       return;
     }
 
-    if (plugin.getDialogManager() != null && plugin.getDialogManager().isAvailable()) {
+    // Bedrock clients cannot show Paper dialogs, so they get the chest menu.
+    if (plugin.getDialogManager() != null
+        && plugin.getDialogManager().isAvailable()
+        && !plugin.getBedrockSupport().isBedrock(player)) {
       boolean opened = plugin.getDialogManager().openMainMenu(player);
       if (!opened) {
         openManagementGUI(player);
@@ -662,26 +666,22 @@ public class RankedSMPCommand implements CommandExecutor, TabCompleter {
       return;
     }
 
-    Player target = Bukkit.getPlayer(args[1]);
-    java.util.UUID targetUUID = null;
-    String targetName = args[1];
-    boolean isOnline = false;
-
-    if (target != null) {
-      targetUUID = target.getUniqueId();
-      targetName = target.getName();
-      isOnline = true;
-    } else {
-      org.bukkit.OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
-      if (offlinePlayer.hasPlayedBefore() || offlinePlayer.isOnline()) {
-        targetUUID = offlinePlayer.getUniqueId();
-        targetName = offlinePlayer.getName() != null ? offlinePlayer.getName() : args[1];
-      } else {
-        Map<String, String> placeholders = Map.of("player", args[1]);
-        messageManager.sendMessage(sender, "general.player-not-found", placeholders);
-        return;
-      }
+    PlayerResolver.Target resolved =
+        plugin
+            .getPlayerResolver()
+            .resolve(
+                sender,
+                args[1],
+                () ->
+                    messageManager.sendMessage(
+                        sender, "general.player-not-found", Map.of("player", args[1])));
+    if (resolved == null) {
+      return;
     }
+    Player target = resolved.online();
+    java.util.UUID targetUUID = resolved.uuid();
+    String targetName = resolved.name();
+    boolean isOnline = target != null;
 
     final UUID finalTargetUUID = targetUUID;
     final String finalTargetName = targetName;
@@ -996,26 +996,22 @@ public class RankedSMPCommand implements CommandExecutor, TabCompleter {
       return;
     }
 
-    Player target = Bukkit.getPlayer(args[1]);
-    java.util.UUID targetUUID = null;
-    String targetName = args[1];
-    boolean isOnline = false;
-
-    if (target != null) {
-      targetUUID = target.getUniqueId();
-      targetName = target.getName();
-      isOnline = true;
-    } else {
-      org.bukkit.OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
-      if (offlinePlayer.hasPlayedBefore() || offlinePlayer.isOnline()) {
-        targetUUID = offlinePlayer.getUniqueId();
-        targetName = offlinePlayer.getName() != null ? offlinePlayer.getName() : args[1];
-      } else {
-        Map<String, String> placeholders = Map.of("player", args[1]);
-        messageManager.sendMessage(sender, "general.player-not-found", placeholders);
-        return;
-      }
+    PlayerResolver.Target resolved =
+        plugin
+            .getPlayerResolver()
+            .resolve(
+                sender,
+                args[1],
+                () ->
+                    messageManager.sendMessage(
+                        sender, "general.player-not-found", Map.of("player", args[1])));
+    if (resolved == null) {
+      return;
     }
+    Player target = resolved.online();
+    java.util.UUID targetUUID = resolved.uuid();
+    String targetName = resolved.name();
+    boolean isOnline = target != null;
 
     final UUID finalTargetUUID = targetUUID;
 
@@ -1210,6 +1206,12 @@ public class RankedSMPCommand implements CommandExecutor, TabCompleter {
     }
 
     if (args.length >= 2 && args[1].equalsIgnoreCase("settings")) {
+      if (plugin.getBedrockSupport().isBedrock(player)) {
+        sender.sendMessage(
+            messageManager.getPrefix()
+                + "§cHammer settings need a Java client. Edit items.yml and run /rsmp reload instead.");
+        return;
+      }
       if (!plugin.getDialogManager().openHammerSettings(player)) {
         sender.sendMessage(
             messageManager.getPrefix()

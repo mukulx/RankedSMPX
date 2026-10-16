@@ -1,6 +1,7 @@
 package dev.mukulx.rankedsmpx.discord;
 
 import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import java.awt.Color;
 import java.time.Instant;
@@ -14,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -171,13 +171,12 @@ public class ForceUnlinkCommand extends ListenerAdapter {
       SchedulerUtil.runAsync(
           plugin,
           () -> {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(minecraftUsername);
+            PlayerResolver.Result found = plugin.getPlayerResolver().resolve(minecraftUsername);
 
-            if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            if (!found.found()) {
               EmbedBuilder embed = new EmbedBuilder();
               embed.setTitle("Player Not Found");
-              embed.setDescription(
-                  "Minecraft player **" + minecraftUsername + "** has never joined the server.");
+              embed.setDescription(PlayerResolver.describeMissing(minecraftUsername, found));
               embed.setColor(new Color(255, 0, 0));
               embed.setTimestamp(Instant.now());
               embed.setFooter(
@@ -186,14 +185,14 @@ public class ForceUnlinkCommand extends ListenerAdapter {
               return;
             }
 
-            UUID minecraftUUID = offlinePlayer.getUniqueId();
+            UUID minecraftUUID = found.target().uuid();
             String linkedDiscordId = linkManager.getDiscordId(minecraftUUID);
 
             if (linkedDiscordId == null) {
               EmbedBuilder embed = new EmbedBuilder();
               embed.setTitle("ℹNot Linked");
               embed.setDescription(
-                  "**" + offlinePlayer.getName() + "** is not linked to any Discord account.");
+                  "**" + found.target().name() + "** is not linked to any Discord account.");
               embed.setColor(new Color(255, 165, 0));
               embed.setTimestamp(Instant.now());
               embed.setFooter(
@@ -210,7 +209,7 @@ public class ForceUnlinkCommand extends ListenerAdapter {
               embed.setDescription(
                   "Successfully unlinked:\n"
                       + "**Minecraft:** "
-                      + offlinePlayer.getName()
+                      + found.target().name()
                       + "\n**Discord ID:** "
                       + linkedDiscordId);
               embed.setColor(new Color(0, 255, 0));

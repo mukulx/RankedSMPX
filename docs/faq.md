@@ -48,6 +48,10 @@ In `plugins/RankedSMPX/`. The plugin stores server settings in `config.yml`, per
 
 Enable `luckperms.enabled` in `config.yml`. RankedSMPX provides `rankedsmp:rank` and `rankedsmp:ranked` contexts. Use LuckPerms context-aware assignments; see the [LuckPerms documentation](https://luckperms.net/wiki/Context).
 
+## Does it work with Bedrock players (Geyser and Floodgate)?
+
+Yes. Bedrock players hold and steal ranks like anyone else. In commands, type their full name with the Floodgate prefix (for example `.Steve`, or whatever `username-prefix` is set to), or use their UUID. When Floodgate is installed on the server, the console shows `GeyserMC (Floodgate) detected` at startup, Bedrock admins get the chest menu instead of the dialog menu, and a name typed without the prefix gets a "Did you mean .Steve?" hint. Set `bedrock.enabled: false` in `config.yml` to turn those extras off.
+
 ## A setting did not change after reload. What should I do?
 
 Check the console for YAML errors, confirm you edited the correct file, and run `/rsmp reload`. Restart for database backend changes and Discord enablement. Some third-party plugins cache placeholders or tab values.

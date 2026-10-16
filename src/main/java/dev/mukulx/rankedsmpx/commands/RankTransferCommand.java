@@ -1,6 +1,7 @@
 package dev.mukulx.rankedsmpx.commands;
 
 import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import dev.mukulx.rankedsmpx.managers.MessageManager;
 import dev.mukulx.rankedsmpx.managers.RankManager;
@@ -54,31 +55,28 @@ public class RankTransferCommand implements CommandExecutor, TabCompleter {
 
     boolean allowOffline = plugin.getConfig().getBoolean("rank-transfer.allow-offline", false);
 
-    Player targetPlayer = Bukkit.getPlayer(args[0]);
-    UUID targetUUID = null;
-    String targetName = args[0];
-    boolean isOnline = targetPlayer != null;
-
-    if (targetPlayer != null) {
-      targetUUID = targetPlayer.getUniqueId();
-      targetName = targetPlayer.getName();
+    Runnable notFound =
+        () ->
+            messageManager.sendMessage(
+                player, "errors.player-not-found", Map.of("player", args[0]));
+    PlayerResolver.Target resolved;
+    if (allowOffline) {
+      resolved = plugin.getPlayerResolver().resolve(player, args[0], notFound);
+      if (resolved == null) {
+        return true;
+      }
     } else {
-      if (!allowOffline) {
-        Map<String, String> placeholders = Map.of("player", args[0]);
-        messageManager.sendMessage(player, "errors.player-not-found", placeholders);
+      Player online = Bukkit.getPlayer(args[0]);
+      if (online == null) {
+        notFound.run();
         return true;
       }
-
-      org.bukkit.OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-      if (offlinePlayer.hasPlayedBefore() || offlinePlayer.getName() != null) {
-        targetUUID = offlinePlayer.getUniqueId();
-        targetName = offlinePlayer.getName() != null ? offlinePlayer.getName() : args[0];
-      } else {
-        Map<String, String> placeholders = Map.of("player", args[0]);
-        messageManager.sendMessage(player, "errors.player-not-found", placeholders);
-        return true;
-      }
+      resolved = new PlayerResolver.Target(online.getUniqueId(), online.getName(), online);
     }
+    Player targetPlayer = resolved.online();
+    UUID targetUUID = resolved.uuid();
+    String targetName = resolved.name();
+    boolean isOnline = targetPlayer != null;
 
     if (targetUUID.equals(player.getUniqueId())) {
       messageManager.sendMessage(player, "commands.rank.transfer.self");

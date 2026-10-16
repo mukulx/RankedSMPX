@@ -1,6 +1,7 @@
 package dev.mukulx.rankedsmpx.discord;
 
 import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import java.awt.Color;
 import java.time.Instant;
@@ -14,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,13 +61,12 @@ public class ForceLinkCommand extends ListenerAdapter {
     SchedulerUtil.runAsync(
         plugin,
         () -> {
-          OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(minecraftUsername);
+          PlayerResolver.Result found = plugin.getPlayerResolver().resolve(minecraftUsername);
 
-          if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+          if (!found.found()) {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Player Not Found");
-            embed.setDescription(
-                "Minecraft player **" + minecraftUsername + "** has never joined the server.");
+            embed.setDescription(PlayerResolver.describeMissing(minecraftUsername, found));
             embed.setColor(new Color(255, 0, 0));
             embed.setTimestamp(Instant.now());
             embed.setFooter(
@@ -76,7 +75,7 @@ public class ForceLinkCommand extends ListenerAdapter {
             return;
           }
 
-          UUID minecraftUUID = offlinePlayer.getUniqueId();
+          UUID minecraftUUID = found.target().uuid();
           String discordId = discordUser.getId();
 
           DiscordLinkManager linkManager = discordManager.getLinkManager();
@@ -89,7 +88,7 @@ public class ForceLinkCommand extends ListenerAdapter {
             embed.setDescription(
                 discordUser.getAsMention()
                     + " is already linked to **"
-                    + offlinePlayer.getName()
+                    + found.target().name()
                     + "**");
             embed.setColor(new Color(255, 165, 0));
             embed.setTimestamp(Instant.now());
@@ -106,7 +105,7 @@ public class ForceLinkCommand extends ListenerAdapter {
             linkManager.unlinkMinecraft(minecraftUUID);
           }
 
-          boolean success = linkManager.forceLink(minecraftUUID, discordId, offlinePlayer.getName());
+          boolean success = linkManager.forceLink(minecraftUUID, discordId, found.target().name());
 
           if (success) {
             EmbedBuilder embed = new EmbedBuilder();
@@ -119,7 +118,7 @@ public class ForceLinkCommand extends ListenerAdapter {
                     + discordId
                     + "`)\n"
                     + "**Minecraft:** "
-                    + offlinePlayer.getName()
+                    + found.target().name()
                     + " (`"
                     + minecraftUUID
                     + "`)");
@@ -158,7 +157,7 @@ public class ForceLinkCommand extends ListenerAdapter {
                       dmEmbed.setTitle("Account Linked");
                       dmEmbed.setDescription(
                           "Your Discord account has been linked to **"
-                              + offlinePlayer.getName()
+                              + found.target().name()
                               + "** by a server administrator.");
                       dmEmbed.setColor(new Color(0, 255, 0));
                       dmEmbed.setTimestamp(Instant.now());

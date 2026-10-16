@@ -1,6 +1,7 @@
 package dev.mukulx.rankedsmpx.commands;
 
 import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,19 +49,20 @@ public class ExtraInvSeeCommand implements CommandExecutor, TabCompleter {
 
     String targetName = args[0];
 
-    Player targetOnline = Bukkit.getPlayer(targetName);
-    if (targetOnline != null) {
-      openExtraInventory(admin, targetOnline, targetOnline.getUniqueId(), targetName, true);
-      return true;
+    PlayerResolver.Target target =
+        plugin
+            .getPlayerResolver()
+            .resolve(
+                admin,
+                targetName,
+                () ->
+                    plugin
+                        .getMessageManager()
+                        .sendLegacyMessage(admin, "&cPlayer not found: " + targetName));
+    if (target != null) {
+      openExtraInventory(
+          admin, target.online(), target.uuid(), target.name(), target.online() != null);
     }
-
-    OfflinePlayer targetOffline = Bukkit.getOfflinePlayer(targetName);
-    if (targetOffline.hasPlayedBefore() || targetOffline.getName() != null) {
-      openExtraInventory(admin, null, targetOffline.getUniqueId(), targetOffline.getName(), false);
-      return true;
-    }
-
-    plugin.getMessageManager().sendLegacyMessage(admin, "&cPlayer not found: " + targetName);
     return true;
   }
 

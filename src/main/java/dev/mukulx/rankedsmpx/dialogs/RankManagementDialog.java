@@ -1,6 +1,7 @@
 package dev.mukulx.rankedsmpx.dialogs;
 
 import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.dialog.DialogResponseView;
 import io.papermc.paper.registry.data.dialog.ActionButton;
@@ -12,7 +13,6 @@ import io.papermc.paper.registry.data.dialog.type.DialogType;
 import java.util.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -149,7 +149,9 @@ public final class RankManagementDialog {
     String target = view.getText("target_player");
     if (target != null && !target.isBlank()) {
       String name = target.trim();
-      boolean listed = plugin.getDatabaseManager().isBlacklisted(Bukkit.getOfflinePlayer(name).getUniqueId());
+      PlayerResolver.Result found = plugin.getPlayerResolver().resolve(name);
+      boolean listed =
+          found.found() && plugin.getDatabaseManager().isBlacklisted(found.target().uuid());
       admin.performCommand("rankblacklist " + (listed ? "remove " : "add ") + name);
     }
   }

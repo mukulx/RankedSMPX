@@ -27,6 +27,7 @@ Per-rank values live in `ranks.yml`: maximum health, XP multiplier, potion durat
 - SQLite storage by default, with optional MySQL and connection pooling.
 - Rank history, JSON import/export, and extra inventory persistence.
 - Optional PlaceholderAPI expansion, TAB integration, and LuckPerms rank contexts.
+- Bedrock players through Geyser and Floodgate, including offline Bedrock players in admin commands.
 - Built-in optional Discord bot for account links, leaderboards, rank roles, messages, and admin commands.
 - Folia-compatible scheduling.
 
@@ -38,4 +39,4 @@ Use `/rsmp menu` for the Paper dialog interface (with a GUI fallback on unsuppor
 
 - Paper 1.21.1+ or compatible Paper fork; Folia is supported.
 - Java 21+.
-- Optional integrations: PlaceholderAPI, TAB, LuckPerms.
+- Optional integrations: PlaceholderAPI, TAB, LuckPerms, Geyser + Floodgate.

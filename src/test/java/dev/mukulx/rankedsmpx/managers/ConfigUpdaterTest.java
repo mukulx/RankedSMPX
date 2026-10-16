@@ -434,6 +434,31 @@ class ConfigUpdaterTest {
   }
 
   @Test
+  @DisplayName("A running v20 server gets the bedrock section with its comments, nothing else changes")
+  void testBedrockSectionAddedToCurrentConfig() throws IOException {
+    String shipped;
+    try (var is = getClass().getClassLoader().getResourceAsStream("config.yml")) {
+      assertNotNull(is);
+      shipped = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
+    int start = shipped.indexOf("# Bedrock players through GeyserMC");
+    int end = shipped.indexOf("database:", start);
+    String live =
+        (shipped.substring(0, start) + shipped.substring(end)).replace("debug: false", "debug: true");
+    Files.writeString(configFile.toPath(), live, StandardCharsets.UTF_8);
+
+    configUpdater.updateConfig();
+
+    FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+    assertTrue(config.getBoolean("bedrock.enabled"));
+    assertTrue(config.getBoolean("debug"), "user value kept");
+    assertEquals(ConfigUpdater.getTargetVersion(), config.getInt("config-version"));
+    String raw = Files.readString(configFile.toPath(), StandardCharsets.UTF_8);
+    assertTrue(raw.contains("# Bedrock players through GeyserMC + Floodgate."));
+    assertTrue(raw.contains("# give Bedrock admins the chest menu"));
+  }
+
+  @Test
   @DisplayName("Backup is created in backups/ directory before modifying config")
   void testBackupCreatedInBackupsFolder() throws IOException {
     String oldConfig =

@@ -4,10 +4,10 @@ import dev.mukulx.rankedsmpx.RankedSMPXPlugin;
 import dev.mukulx.rankedsmpx.database.DatabaseManager;
 import dev.mukulx.rankedsmpx.managers.MessageManager;
 import dev.mukulx.rankedsmpx.managers.RankManager;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -73,35 +73,28 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
       return true;
     }
 
-    String targetName = args[1];
-    OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-
-    if (!target.hasPlayedBefore() && !target.isOnline()) {
-      sender.sendMessage(
-          messageManager.getPrefix()
-              + "§cPlayer §b"
-              + targetName
-              + " §chas never played on this server!");
+    PlayerResolver.Target target = findTarget(sender, args[1]);
+    if (target == null) {
       return true;
     }
 
-    UUID targetUUID = target.getUniqueId();
+    UUID targetUUID = target.uuid();
 
     if (databaseManager.isBlacklisted(targetUUID)) {
       sender.sendMessage(
-          messageManager.getPrefix() + "§b" + target.getName() + " §cis already blacklisted!");
+          messageManager.getPrefix() + "§b" + target.name() + " §cis already blacklisted!");
       return true;
     }
 
     String blacklistedBy = sender instanceof Player ? sender.getName() : "Console";
-    databaseManager.addToBlacklist(targetUUID, target.getName(), blacklistedBy);
+    databaseManager.addToBlacklist(targetUUID, target.name(), blacklistedBy);
 
     Integer currentRank = rankManager.getRank(targetUUID);
     if (currentRank != null) {
       rankManager.removeRank(targetUUID);
 
-      if (target.isOnline()) {
-        Player onlineTarget = (Player) target;
+      if (target.online() != null) {
+        Player onlineTarget = target.online();
         plugin.getHealthManager().resetHealth(onlineTarget);
         onlineTarget.sendMessage(
             messageManager.getPrefix() + "§cYou have been blacklisted from receiving ranks.");
@@ -120,14 +113,14 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
         var updatesManager = plugin.getDiscordManager().getUpdatesManager();
         if (updatesManager != null) {
           updatesManager.postRankRemoved(
-              target.getName(), currentRank, "Blacklisted by " + blacklistedBy);
+              target.name(), currentRank, "Blacklisted by " + blacklistedBy);
         }
       }
 
       Map<String, String> broadcastPlaceholders =
           Map.of(
               "player",
-              target.getName(),
+              target.name(),
               "rank",
               "0",
               "old_rank",
@@ -143,7 +136,7 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
       sender.sendMessage(
           messageManager.getPrefix()
               + "§b"
-              + target.getName()
+              + target.name()
               + " §ahas been blacklisted and their rank (§b#"
               + currentRank
               + "§a) has been removed.");
@@ -151,18 +144,18 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
       Bukkit.broadcast(dev.mukulx.rankedsmpx.managers.MessageManager.legacy(
           messageManager.getPrefix()
               + "§b"
-              + target.getName()
+              + target.name()
               + " §chas been blacklisted from receiving ranks."));
       sender.sendMessage(
           messageManager.getPrefix()
               + "§b"
-              + target.getName()
+              + target.name()
               + " §ahas been blacklisted from receiving ranks.");
     }
 
     plugin
         .getLogger()
-        .info(sender.getName() + " blacklisted " + target.getName() + " from receiving ranks");
+        .info(sender.getName() + " blacklisted " + target.name() + " from receiving ranks");
     return true;
   }
 
@@ -172,23 +165,16 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
       return true;
     }
 
-    String targetName = args[1];
-    OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-
-    if (!target.hasPlayedBefore() && !target.isOnline()) {
-      sender.sendMessage(
-          messageManager.getPrefix()
-              + "§cPlayer §b"
-              + targetName
-              + " §chas never played on this server!");
+    PlayerResolver.Target target = findTarget(sender, args[1]);
+    if (target == null) {
       return true;
     }
 
-    UUID targetUUID = target.getUniqueId();
+    UUID targetUUID = target.uuid();
 
     if (!databaseManager.isBlacklisted(targetUUID)) {
       sender.sendMessage(
-          messageManager.getPrefix() + "§b" + target.getName() + " §cis not blacklisted!");
+          messageManager.getPrefix() + "§b" + target.name() + " §cis not blacklisted!");
       return true;
     }
 
@@ -198,7 +184,7 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
     Bukkit.broadcast(dev.mukulx.rankedsmpx.managers.MessageManager.legacy(
         messageManager.getPrefix()
             + "§b"
-            + target.getName()
+            + target.name()
             + " §ahas been removed from the rank blacklist by §b"
             + unblacklistBy
             + "§a."));
@@ -206,19 +192,34 @@ public class RankBlacklistCommand implements CommandExecutor, TabCompleter {
     sender.sendMessage(
         messageManager.getPrefix()
             + "§b"
-            + target.getName()
+            + target.name()
             + " §ahas been removed from the blacklist.");
 
-    if (target.isOnline()) {
-      Player onlineTarget = (Player) target;
+    if (target.online() != null) {
+      Player onlineTarget = target.online();
       onlineTarget.sendMessage(
           messageManager.getPrefix() + "§aYou have been removed from the rank blacklist.");
     }
 
     plugin
         .getLogger()
-        .info(sender.getName() + " removed " + target.getName() + " from rank blacklist");
+        .info(sender.getName() + " removed " + target.name() + " from rank blacklist");
     return true;
+  }
+
+  @Nullable
+  private PlayerResolver.Target findTarget(@NotNull CommandSender sender, @NotNull String name) {
+    return plugin
+        .getPlayerResolver()
+        .resolve(
+            sender,
+            name,
+            () ->
+                sender.sendMessage(
+                    messageManager.getPrefix()
+                        + "§cPlayer §b"
+                        + name
+                        + " §chas never played on this server!"));
   }
 
   private boolean handleList(@NotNull CommandSender sender) {
