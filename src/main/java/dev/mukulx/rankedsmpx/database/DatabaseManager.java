@@ -8,7 +8,10 @@ import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -575,6 +578,70 @@ public class DatabaseManager {
     }
 
     return players;
+  }
+
+  /** Every player stored under this name in any table, ignoring case. */
+  @NotNull
+  public Map<UUID, String> findPlayersByName(@NotNull String name) {
+    String sql =
+        "SELECT uuid, player_name FROM ranks WHERE LOWER(player_name) = ?"
+            + " UNION SELECT uuid, player_name FROM rank_blacklist WHERE LOWER(player_name) = ?"
+            + " UNION SELECT uuid, player_name FROM rank_history WHERE LOWER(player_name) = ?";
+    String key = name.toLowerCase(Locale.ROOT);
+    return queryNames(sql, key, key, key);
+  }
+
+  @Nullable
+  public String findPlayerName(@NotNull UUID uuid) {
+    String sql =
+        "SELECT uuid, player_name FROM ranks WHERE uuid = ?"
+            + " UNION SELECT uuid, player_name FROM rank_blacklist WHERE uuid = ?"
+            + " UNION SELECT uuid, player_name FROM rank_history WHERE uuid = ?";
+    String id = uuid.toString();
+    return queryNames(sql, id, id, id).get(uuid);
+  }
+
+  /** Stored names that end with {@code suffix}, ignoring case. Used for "did you mean" hints. */
+  @NotNull
+  public Map<UUID, String> findPlayersByNameSuffix(@NotNull String suffix) {
+    String pattern =
+        "%"
+            + suffix
+                .toLowerCase(Locale.ROOT)
+                .replace("!", "!!")
+                .replace("%", "!%")
+                .replace("_", "!_");
+    String sql =
+        "SELECT uuid, player_name FROM ranks WHERE LOWER(player_name) LIKE ? ESCAPE '!'"
+            + " UNION SELECT uuid, player_name FROM rank_blacklist WHERE LOWER(player_name) LIKE ? ESCAPE '!'"
+            + " UNION SELECT uuid, player_name FROM rank_history WHERE LOWER(player_name) LIKE ? ESCAPE '!'";
+    return queryNames(sql, pattern, pattern, pattern);
+  }
+
+  private Map<UUID, String> queryNames(String sql, String... params) {
+    Map<UUID, String> found = new LinkedHashMap<>();
+    try (Connection conn = getConnection()) {
+      if (conn == null) {
+        return found;
+      }
+      try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setQueryTimeout(QUERY_TIMEOUT);
+        for (int i = 0; i < params.length; i++) {
+          stmt.setString(i + 1, params[i]);
+        }
+        try (ResultSet rs = stmt.executeQuery()) {
+          while (rs.next()) {
+            try {
+              found.putIfAbsent(UUID.fromString(rs.getString("uuid")), rs.getString("player_name"));
+            } catch (IllegalArgumentException ignored) {
+            }
+          }
+        }
+      }
+    } catch (SQLException e) {
+      plugin.getLogger().warning("Failed to look up player names: " + e.getMessage());
+    }
+    return found;
   }
 
   public void addRankHistory(

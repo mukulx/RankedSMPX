@@ -41,6 +41,8 @@ errors:
 general:
   no-permission: "{prefix}&cYou don't have permission to do that!"
   player-not-found: "{prefix}&cPlayer '{player}' not found!"
+  player-ambiguous: "{prefix}&c'{player}' matches more than one player. Use one of these UUIDs:"
+  player-not-found-suggest: "{prefix}&cPlayer '{player}' not found. Did you mean &e{suggestion}&c?"
   player-not-online: "{prefix}&cPlayer '{player}' is not online!"
   reload-success: "{prefix}&aConfiguration reloaded successfully!"
   game-not-started: "{prefix}&cRanks have not been assigned yet!"

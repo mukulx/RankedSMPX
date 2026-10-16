@@ -183,6 +183,13 @@ luckperms:
   # Refresh LuckPerms data when a rank changes.
   sync-on-rank-change: true
 
+# Bedrock players through GeyserMC + Floodgate. Commands always accept a
+# Bedrock player's full name (with the Floodgate prefix, e.g. .Steve) or UUID.
+bedrock:
+  # Suggest the prefixed name when it is left out ("Did you mean .Steve?") and
+  # give Bedrock admins the chest menu, since they cannot see Paper dialogs.
+  enabled: true
+
 database:
   # sqlite or mysql
   type: sqlite

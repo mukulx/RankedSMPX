@@ -32,6 +32,7 @@ import dev.mukulx.rankedsmpx.listeners.PlayerQuitListener;
 import dev.mukulx.rankedsmpx.listeners.PlayerRespawnListener;
 import dev.mukulx.rankedsmpx.listeners.PotionEffectListener;
 import dev.mukulx.rankedsmpx.listeners.RanksGUIListener;
+import dev.mukulx.rankedsmpx.managers.BedrockSupport;
 import dev.mukulx.rankedsmpx.managers.ConfigManager;
 import dev.mukulx.rankedsmpx.managers.ConfigUpdater;
 import dev.mukulx.rankedsmpx.managers.ConfigLayout;
@@ -58,6 +59,7 @@ import dev.mukulx.rankedsmpx.metrics.Metrics;
 import dev.mukulx.rankedsmpx.metrics.Metrics.SimplePie;
 import dev.mukulx.rankedsmpx.placeholders.RankedSMPPlaceholders;
 import dev.mukulx.rankedsmpx.utils.ErrorReports;
+import dev.mukulx.rankedsmpx.utils.PlayerResolver;
 import dev.mukulx.rankedsmpx.utils.SchedulerUtil;
 import dev.mukulx.rankedsmpx.utils.UpdateChecker;
 import java.util.logging.Handler;
@@ -79,6 +81,7 @@ public class RankedSMPXPlugin extends JavaPlugin {
   private MessageManager messageManager;
   private DatabaseManager databaseManager;
   private RankManager rankManager;
+  private PlayerResolver playerResolver;
   private GameManager gameManager;
   private HealthManager healthManager;
   private PotionManager potionManager;
@@ -91,6 +94,7 @@ public class RankedSMPXPlugin extends JavaPlugin {
   private TABIntegration tabIntegration;
   private VanillaTabManager vanillaTabManager;
   private LuckPermsHook luckPermsHook;
+  private BedrockSupport bedrockSupport;
   private DiscordManager discordManager;
   private UpdateChecker updateChecker;
   private PotionEffectListener potionEffectListener;
@@ -131,6 +135,8 @@ public class RankedSMPXPlugin extends JavaPlugin {
       checkForOldPlugin();
       this.databaseManager = new DatabaseManager(this, configManager);
       this.rankManager = new RankManager(this, databaseManager);
+      this.bedrockSupport = new BedrockSupport(this);
+      this.playerResolver = new PlayerResolver(databaseManager, messageManager, bedrockSupport);
       this.gameManager = new GameManager(this, rankManager, messageManager);
       this.healthManager = new HealthManager(this, rankManager, configManager);
       this.potionManager = new PotionManager(this, configManager);
@@ -217,6 +223,7 @@ public class RankedSMPXPlugin extends JavaPlugin {
       }
 
       setupLuckPerms();
+      bedrockSupport.initialize();
 
       getServer()
           .getServicesManager()
@@ -538,6 +545,7 @@ public class RankedSMPXPlugin extends JavaPlugin {
     healthManager.cancelAggressiveTask();
 
     setupLuckPerms();
+    bedrockSupport.initialize();
 
     for (org.bukkit.entity.Player player : org.bukkit.Bukkit.getOnlinePlayers()) {
       if (inventoryManager != null) {
@@ -615,6 +623,11 @@ public class RankedSMPXPlugin extends JavaPlugin {
   @NotNull
   public RankManager getRankManager() {
     return rankManager;
+  }
+
+  @NotNull
+  public PlayerResolver getPlayerResolver() {
+    return playerResolver;
   }
 
   @NotNull
@@ -697,6 +710,11 @@ public class RankedSMPXPlugin extends JavaPlugin {
   @Nullable
   public LuckPermsHook getLuckPermsHook() {
     return luckPermsHook;
+  }
+
+  @NotNull
+  public BedrockSupport getBedrockSupport() {
+    return bedrockSupport;
   }
 
   @Nullable
