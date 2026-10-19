@@ -4,12 +4,13 @@ plugins {
 }
 
 group = 'dev.mukulx'
-version = '3.0.0'
+version = '3.0.1'
 
 repositories {
     mavenCentral()
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://repo.opencollab.dev/main/' }
     maven { url = 'https://jitpack.io' }
 }
 
@@ -23,6 +24,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.github.NEZNAMY:TAB-API:6.0.0'
     compileOnly 'net.luckperms:api:5.4'
+    compileOnly 'org.geysermc.floodgate:api:2.2.4-SNAPSHOT'
     compileOnly 'io.netty:netty-all:4.1.100.Final'
     compileOnly 'org.jetbrains:annotations:24.1.0'
     
