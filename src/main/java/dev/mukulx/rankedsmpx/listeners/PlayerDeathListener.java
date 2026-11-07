@@ -203,6 +203,7 @@ public class PlayerDeathListener implements Listener {
           killer.getUniqueId(), victimRank, "Killed " + victim.getName());
       rankManager.removeRankWithHistory(
           victim.getUniqueId(), victimRank, "Killed by " + killer.getName());
+      applyVictimHealth(victim);
 
       SchedulerUtil.runForEntity(
           plugin,
@@ -355,6 +356,7 @@ public class PlayerDeathListener implements Listener {
         victim.getUniqueId(),
         "Killed " + victim.getName(),
         "Killed by " + killer.getName());
+    applyVictimHealth(victim);
 
     SchedulerUtil.runForEntity(
         plugin,
@@ -648,6 +650,15 @@ public class PlayerDeathListener implements Listener {
     event.deathMessage(deathMsg);
   }
 
+  /**
+   * Sets the victim's max health for their new rank while they are still dead. The modifier
+   * carries over to the respawned player, so this doesn't depend on the respawn listener, which
+   * can miss on Folia where respawn finishes over several ticks.
+   */
+  private void applyVictimHealth(@NotNull Player victim) {
+    plugin.getHealthManager().applyHealth(victim);
+  }
+
   private void handleLowerRankDrop(Player victim, Player killer, int victimRank, int killerRank) {
     if (plugin.getConfig().getBoolean("debug", false)) {
       plugin.getLogger().info("Higher rank " + killer.getName() + " (#" + killerRank
@@ -656,6 +667,7 @@ public class PlayerDeathListener implements Listener {
 
     rankManager.removeRankWithHistory(
         victim.getUniqueId(), victimRank, "Killed by " + killer.getName() + " (rank dropped as item)");
+    applyVictimHealth(victim);
 
     plugin.getInventoryManager().removeExtraInventory(victim.getUniqueId());
 
